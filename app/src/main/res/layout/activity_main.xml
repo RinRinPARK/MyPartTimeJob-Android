@@ -27,10 +27,10 @@
         app:menu="@menu/menu_bottom_nav"
         app:labelVisibilityMode="labeled"
         app:itemIconSize="55dp"
-        app:itemTextColor="@color/black"
+        app:itemTextColor="@drawable/menu_selector_color"
+        app:itemIconTint="@drawable/menu_selector_color"
         app:itemTextAppearanceActive="@style/BottomNavigationViewTextStyle"
         app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
-        app:itemIconTint="@color/black"
         app:itemPaddingTop="2dp"
         app:itemPaddingBottom="0dp">
     </com.google.android.material.bottomnavigation.BottomNavigationView>
