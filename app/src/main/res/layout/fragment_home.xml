@@ -3,12 +3,160 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:textColor="@color/black"
+        android:layout_width="217dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:padding="10dp"
+        android:background="@drawable/textview_border"
+        android:text="MY 알바(가제)"
+        android:textSize="30dp"
+        android:fontFamily="@font/bold">
+
+    </TextView>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home Fragment" />
+        android:layout_height="640dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="319dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="113dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#8DABF7"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="9dp"
+                    android:src="@drawable/bakery">
+
+                </ImageView>
+                <TextView
+                    android:textColor="@color/black"
+                    android:layout_width="180dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="9dp"
+                    android:text="파리바게뜨 숭실대점"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20dp">
+
+                </TextView>
+
+
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="319dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:cardBackgroundColor="#8DABF7"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="9dp"
+                    android:src="@drawable/convenience">
+
+                </ImageView>
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:layout_width="180dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="11dp"
+                    android:layout_marginTop="9dp"
+                    android:text="GS25 숭실대점"
+                    android:fontFamily="@font/bold"
+                    android:textSize="20dp">
+
+                </TextView>
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+    <TextView
+        android:textColor="@color/black"
+        android:layout_width="90dp"
+        android:layout_height="32dp"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="451dp"
+        android:padding="8dp"
+        android:background="@drawable/textview_border1"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="알바 추가"
+        android:textSize="15dp"
+        android:fontFamily="@font/bold"
+        android:elevation="5dp">
+
+    </TextView>
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginLeft="310dp"
+        android:layout_marginTop="493dp"
+        >
+        <ImageButton
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:background="@drawable/plus_circle"
+            android:src="@drawable/baseline_plus"
+            android:clickable="true"
+            android:focusable="true"
+            android:elevation="5dp">
+
+        </ImageButton>
+
+
+
+
+    </RelativeLayout>
+
+
+
+
 
 </FrameLayout>
