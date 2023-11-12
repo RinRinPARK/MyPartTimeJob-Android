@@ -168,6 +168,7 @@
         android:layout_marginTop="30dp"
         >
         <Button
+            android:id="@+id/inputWorkedTimeBtn"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_width="120dp"
@@ -176,9 +177,12 @@
             android:textSize="20dp"
             android:layout_marginRight="10dp"
             android:backgroundTint="#FEF0A9"
-            android:background="@drawable/albahome_button_custom1">
+            android:background="@drawable/albahome_button_custom1"
+            android:clickable="true"
+            >
         </Button>
         <Button
+            android:id="@+id/moveToDaetaCalendarBtn"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_width="140dp"
