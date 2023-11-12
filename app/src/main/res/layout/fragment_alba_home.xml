@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AlbaHomeFragment">
+
+    <TextView
+        android:id="@+id/AlbaHome_title"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:padding="10dp"
+        android:background="@drawable/textview_border"
+        android:text="파리바게뜨 숭실대점"
+        android:textSize="30dp"
+        android:fontFamily="@font/bold"
+        android:layout_marginBottom="70dp">
+
+    </TextView>
+
+
+    <TextView
+        android:id="@+id/albaHome_workLog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="&lt;근무 현황&gt;"
+        android:textSize="30dp"
+        android:textColor="@color/black"
+        android:layout_below="@+id/AlbaHome_title"
+        android:layout_marginLeft="15dp"
+        android:layout_marginBottom="5dp"
+        ></TextView>
+
+    <GridLayout
+        android:layout_alignRight="@id/albaHome_Line"
+        android:layout_above="@+id/albaHome_Line"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/lightgray"
+        android:layout_marginBottom="0dp"
+        android:orientation="horizontal"
+        android:rowCount="3"
+        android:columnCount="3"
+        android:useDefaultMargins="false"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="시급: "
+            android:textSize="17dp"
+            android:padding="5dp">
+        </TextView>
+        <TextView
+            android:id="@+id/albaHome_HourlyRate"
+            android:layout_gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:padding="5dp"
+            android:text="9,620"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/black">
+        </TextView>
+        <TextView
+            android:paddingLeft="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(원)"
+            android:textSize="17dp"
+            android:padding="5dp">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="근무 시간: "
+            android:textSize="17dp"
+            android:padding="5dp">
+        </TextView>
+        <TextView
+            android:id="@+id/albaHome_workedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:padding="5dp"
+            android:text="13.5"
+            android:layout_gravity="right"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/black">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(시간)"
+            android:textSize="17dp"
+            android:padding="5dp">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="예상 월급: "
+            android:textSize="17dp"
+            android:padding="5dp">
+        </TextView>
+        <TextView
+            android:id="@+id/albaHome_salary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17dp"
+            android:padding="5dp"
+            android:text="129,890"
+            android:layout_gravity="right"
+            android:fontFamily="@font/bold"
+            android:textColor="@color/black">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(원)"
+            android:textSize="17dp"
+            android:padding="5dp">
+        </TextView>
+
+        </GridLayout>
+
+    <View
+        android:id="@+id/albaHome_Line"
+        android:layout_width="380dp"
+        android:layout_height="3dp"
+        android:background="#C9000000"
+        android:layout_below="@id/albaHome_workLog"
+        android:backgroundTint="@color/lightgray"
+        android:layout_alignLeft="@id/albaHome_workLog"
+        android:layout_marginRight="10dp"
+        ></View>
+
+    <ScrollView
+        android:id="@+id/albaHome_ScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_below="@id/albaHome_Line">
+
+
+    </ScrollView>
+
+    <View
+        android:id="@+id/albaHome_Line2"
+        android:layout_width="380dp"
+        android:layout_height="3dp"
+        android:background="#C9000000"
+        android:layout_below="@id/albaHome_ScrollView"
+        android:backgroundTint="@color/lightgray"
+        android:layout_alignLeft="@id/albaHome_workLog"
+        android:layout_marginRight="10dp"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/albaHome_Line2"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        >
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:text="시간 입력 &gt;"
+            android:textSize="20dp"
+            android:layout_marginRight="10dp"
+            android:backgroundTint="#FEF0A9"
+            android:background="@drawable/albahome_button_custom1">
+        </Button>
+        <Button
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:text="대타 캘린더 &gt;"
+            android:textSize="20dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/albahome_button_custom2">
+        </Button>
+    </LinearLayout>
+
+
+
+</RelativeLayout>

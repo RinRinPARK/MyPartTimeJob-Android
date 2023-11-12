@@ -16,6 +16,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="?attr/actionBarSize"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#C9000000"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"></View>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:background="#EFEFEF"
         android:id="@+id/bottom_navigation_view"
@@ -33,7 +40,8 @@
         app:itemTextAppearanceInactive="@style/BottomNavigationViewTextStyle"
         app:itemPaddingTop="2dp"
         app:itemPaddingBottom="2dp"
-        android:paddingBottom="4dp">
+        android:paddingBottom="4dp"
+        >
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
