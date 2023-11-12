@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/lightblue"
+    android:gravity="center"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="63dp"
+            android:layout_marginBottom="0dp"
+            android:gravity="left"
+            android:minHeight="80dp"
+            android:paddingLeft="22dp"
+            android:paddingTop="25dp"
+            android:paddingBottom="0dp"
+            android:textSize="25sp"
+            android:text="알바 코드 입력"
+            android:fontFamily="@font/bold"></TextView>
+
+        <View
+            android:layout_width="175dp"
+            android:layout_height="4dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/black"></View>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/input_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:backgroundTint="@color/black"
+        android:gravity="center"
+        android:hint="고유 번호를 입력하세요."
+        android:inputType="number"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"></EditText>
+
+    <LinearLayout
+        android:background="@color/lightblue"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="right"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/dialog_button_custom"
+            android:layout_marginRight="10dp"
+            android:id="@+id/codeinputButton"
+            android:layout_height="45dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="입력"
+            android:textSize="18sp"
+            ></Button>
+
+        <Button
+            android:background="@drawable/dialog_button_custom"
+            android:id="@+id/codecloseButton"
+            android:layout_height="45dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="닫기"
+            android:textSize="18sp"
+            ></Button>
+
+    </LinearLayout>
+</LinearLayout>
