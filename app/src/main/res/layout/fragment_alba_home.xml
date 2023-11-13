@@ -178,7 +178,6 @@
             android:layout_marginRight="10dp"
             android:backgroundTint="#FEF0A9"
             android:background="@drawable/albahome_button_custom1"
-            android:clickable="true"
             >
         </Button>
         <Button
