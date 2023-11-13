@@ -22,7 +22,7 @@ public class HourlyRateDialogFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.dialogfragment_hourlyrate, container);
-        Button closeButton = (Button) v.findViewById(R.id.closeButton);
+//        Button closeButton = (Button) v.findViewById(R.id.closeButton);
 //        closeButton.setOnClickListener(this); //마찬가지로 onClcik() 함수 주석 제거 후 사용
         return v;
     }
