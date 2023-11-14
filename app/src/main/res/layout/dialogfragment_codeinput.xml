@@ -68,6 +68,7 @@
             android:layout_weight="1"
             android:text="입력"
             android:textSize="18sp"
+            android:clickable="true"
             ></Button>
 
         <Button
@@ -78,6 +79,7 @@
             android:layout_weight="1"
             android:text="닫기"
             android:textSize="18sp"
+            android:clickable="true"
             ></Button>
 
     </LinearLayout>

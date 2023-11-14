@@ -12,11 +12,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginBottom="20dp">
         <TextView
             android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="63dp"
+            android:layout_height="62dp"
             android:layout_marginBottom="0dp"
             android:gravity="left"
             android:minHeight="80dp"
@@ -24,32 +25,66 @@
             android:paddingTop="25dp"
             android:paddingBottom="0dp"
             android:textSize="25sp"
-            android:text="시급 입력 "></TextView>
+            android:text="근무 정보 입력 "></TextView>
 
-        <View
-            android:layout_marginLeft="13dp"
-            android:layout_width="135dp"
-            android:layout_height="4dp"
-            android:layout_gravity="left"
-            android:layout_marginTop="0dp"
-            android:background="@color/black"
-            ></View>
+
     </LinearLayout>
 
-    <EditText
-        android:backgroundTint="@color/black"
-        android:id="@+id/hourly_rate"
-        android:layout_margin="30dp"
-        android:padding="15dp"
-        android:layout_width="match_parent"
+    <DatePicker
+        android:theme="@style/DatePickerTheme"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:hint="시급을 입력해주세요."
-        android:inputType="number">
-    </EditText>
+        android:selectionDividerHeight="0.1dp"
+        >
 
+    </DatePicker>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="얼마나 일했나요? "-->
+<!--            android:textSize="20dp">-->
+
+<!--        </TextView>-->
+
+<!--        <EditText-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="일한 시간을 입력해주세요"-->
+<!--            android:textColorHint="#bdbab9"-->
+<!--            android:inputType="number">-->
+
+<!--        </EditText>-->
+<!--    </LinearLayout>-->
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="근무한 시간:    "
+        android:textSize="20dp">
+
+    </TextView>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="123dp"
+        android:layout_margin="0dp"
+        android:paddingTop="0dp"
+        android:theme="@style/NumberPickerStyle"></NumberPicker>
+
+</LinearLayout>
 
     <LinearLayout
         android:background="@color/lightblue"
@@ -62,9 +97,9 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/hourlyRateBtnInput"
             android:background="@drawable/dialog_button_custom"
             android:layout_marginRight="10dp"
+            android:id="@+id/inputButton"
             android:layout_height="45dp"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -73,8 +108,8 @@
             ></Button>
 
         <Button
-            android:id="@+id/hourlyRateBtnClose"
             android:background="@drawable/dialog_button_custom"
+            android:id="@+id/closeButton"
             android:layout_height="45dp"
             android:layout_width="0dp"
             android:layout_weight="1"
