@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
     //초기 셋팅
     private void init(){
 
-
         //fragment 객체 생성하여 할당
         homeFragment= new HomeFragment();
         calendarFragment= new CalendarFragment();
