@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:text="&lt;근무 현황&gt;"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:textColor="@color/black"
         android:layout_below="@+id/AlbaHome_title"
         android:layout_marginLeft="15dp"
