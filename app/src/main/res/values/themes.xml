@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="Base.Theme.My_Parttime" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="android:fontFamily">@font/my_font</item>
@@ -25,8 +25,11 @@
     </style>
 
     <style name="NumberPickerStyle">
+        <item name="selectableItemBackground">@color/black</item>
+        <item name="colorControlNormal">@color/middlegray</item>
         <item name="android:textSize">20dp</item>
-        <item name="android:textColorPrimary">@color/lightblue</item>
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
+
 
 </resources>
