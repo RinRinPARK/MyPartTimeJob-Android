@@ -5,6 +5,7 @@
     <color name="lightblue">#D7E3FF</color>
     <color name="blue">#7499F8</color>
     <color name="lightgray">#dbdbd9</color>
+    <color name="middlegray">#656566</color>
     <color name="lightyellow">#FEF0A9</color>
     <color name="lightpink">#ffd6e7</color>
 </resources>
