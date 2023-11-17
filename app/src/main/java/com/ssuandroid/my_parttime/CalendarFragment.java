@@ -15,12 +15,19 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class CalendarFragment extends Fragment {
     /**
@@ -47,6 +54,10 @@ public class CalendarFragment extends Fragment {
      */
     private Calendar mCal;
 
+    FirebaseFirestore db;
+
+    List<Map> datas;
+
 
     @Nullable
     @Override
@@ -56,9 +67,11 @@ public class CalendarFragment extends Fragment {
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Log.d("SUrin", "calendar view");
+        Log.d("Surin", "calendar view");
         super.onViewCreated(view, savedInstanceState);
-        tvDate = (TextView)view.findViewById(R.id.tv_date);
+        initializeCloudFirestore();
+
+        tvDate = (TextView)view.findViewById(R.id.month_wage);
         gridView = (GridView)view.findViewById(R.id.gridview);
 
         // 오늘에 날짜를 세팅 해준다.
@@ -71,7 +84,7 @@ public class CalendarFragment extends Fragment {
 
 
         //현재 날짜 텍스트뷰에 뿌려줌
-        tvDate.setText(curYearFormat.format(date) + "/" + curMonthFormat.format(date));
+        tvDate.setText(curMonthFormat.format(date)+"월 월급 달력");
 
         //gridview 요일 표시
         dayList = new ArrayList<String>();
@@ -98,6 +111,32 @@ public class CalendarFragment extends Fragment {
         gridAdapter = new GridAdapter(getActivity().getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
 
+        db.collection("calendar")
+                .whereEqualTo("user", 1)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                datas.add(document.getData());
+                            }
+                        } else {
+                            Log.d("Surin", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        for (Map data: datas) {
+            // 데이터 받아오는 로직
+        }
+
+    }
+
+    // firestore 불러오는 함수
+    private void initializeCloudFirestore() {
+        // Access a Cloud Firestore instance from your Activity
+        db = FirebaseFirestore.getInstance();
     }
 
     /**
