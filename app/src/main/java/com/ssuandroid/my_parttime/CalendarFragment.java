@@ -13,51 +13,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.TimeZone;
 
 public class CalendarFragment extends Fragment {
-    /**
-     * 연/월 텍스트뷰
-     */
+    //연,월 텍스트뷰
     private TextView tvDate;
-    /**
-     * 그리드뷰 어댑터
-     */
+    // 그리드뷰 어댑터
     private GridAdapter gridAdapter;
 
-    /**
-     * 일 저장 할 리스트
-     */
+    // 일 저장할 리스트
     private ArrayList<String> dayList;
 
-    /**
-     * 그리드뷰
-     */
+    // 그리드 뷰
     private GridView gridView;
-
-    /**
-     * 캘린더 변수
-     */
+    // 캘린더 변수
     private Calendar mCal;
 
     FirebaseFirestore db;
 
-    List<Map> datas;
-
+    List<Map<String, Object>> datas = new ArrayList<>();
 
     @Nullable
     @Override
@@ -111,26 +108,154 @@ public class CalendarFragment extends Fragment {
         gridAdapter = new GridAdapter(getActivity().getApplicationContext(), dayList);
         gridView.setAdapter(gridAdapter);
 
-        db.collection("calendar")
-                .whereEqualTo("user", 1)
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, Integer.parseInt(curYearFormat.format(date)));
+        cal.set(Calendar.MONTH, Integer.parseInt(curMonthFormat.format(date)));
+        cal.set(Calendar.DAY_OF_MONTH, 1); // 1일로 설정
+        Date startDate = cal.getTime();
+
+        cal.add(Calendar.MONTH, 1); // 한 달 증가 (다음 달의 1일)
+        cal.add(Calendar.DAY_OF_MONTH, -1); // 하루 감소 (현재 달의 마지막 날)
+        Date endDate = cal.getTime();
+
+        // 데이터 받아 오기
+        List<String> branchNames = new ArrayList<>();
+        List<List<String>> datesAndBranches = new ArrayList<>();
+
+        // 종료일 (년월의 마지막 날 23:59:59)
+        Calendar startDateCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+9"));
+        startDateCalendar.set(Calendar.YEAR, Integer.parseInt(curYearFormat.format(date)));
+        startDateCalendar.set(Calendar.MONTH, Integer.parseInt(curMonthFormat.format(date)));
+        startDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        startDateCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        startDateCalendar.set(Calendar.MINUTE, 0);
+        startDateCalendar.set(Calendar.SECOND, 0);
+        Date start = startDateCalendar.getTime();
+
+        // 시작일 (년월의 1일 00:00:00)
+        Calendar endDateCalendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+9"));;
+        endDateCalendar.set(Calendar.YEAR, Integer.parseInt(curYearFormat.format(date)));
+        endDateCalendar.set(Calendar.MONTH, Integer.parseInt(curMonthFormat.format(date))-1);
+        endDateCalendar.set(Calendar.DAY_OF_MONTH, 1);
+        endDateCalendar.add(Calendar.DAY_OF_MONTH, -1); // 이전 달의 마지막 날로 설정
+        endDateCalendar.set(Calendar.HOUR_OF_DAY, 23);
+        endDateCalendar.set(Calendar.MINUTE, 59);
+        endDateCalendar.set(Calendar.SECOND, 59);
+        Date end = endDateCalendar.getTime();
+
+        db.collection("Work")
+                .whereEqualTo("userId", 1)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int totalWage = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                datas.add(document.getData());
+                                List<String> data = new ArrayList<>();
+                                Timestamp timestamp = (Timestamp) document.get("date");
+                                Date timestampToDate = timestamp.toDate();
+                                String dateString = timestampToDate.toString();
+                                if (timestampToDate.after(end) && timestampToDate.before(start)) {
+                                    String branchName = (String) document.get("branchName");
+                                    totalWage += (((Number) document.get("wage")).intValue() * ((Number) document.get("workTime")).intValue());
+                                    String day = null;
+                                    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                                    try {
+                                        Date date = dateFormat.parse(dateString);
+                                        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.KOREA);
+                                        day = dayFormat.format(date);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (!(branchNames.contains(branchName)))  {
+                                        branchNames.add(branchName);
+                                    }
+                                    data.add(branchName);
+                                    data.add(day);
+                                    datesAndBranches.add(data);
+                                }
                             }
+
+                            // 오른쪽 상단 알바 지점 라벨 추가
+                            RelativeLayout storeListView = view.findViewById(R.id.store_list);
+                            initializeCalendarLabel(storeListView, branchNames);
+
+                            // 캘린더 뷰 내부에 알바 지점 라벨 추가
+                            addLabelsOnCalendar(datesAndBranches, branchNames);
+
+                            // 예상 월급 뷰에 뿌리기
+                            TextView expWageNum = (TextView) view.findViewById(R.id.exp_wage_num);
+                            expWageNum.setText(totalWage + "원");
                         } else {
                             Log.d("Surin", "Error getting documents: ", task.getException());
                         }
                     }
                 });
 
-        for (Map data: datas) {
-            // 데이터 받아오는 로직
-        }
+    }
 
+    // 오른쪽 상단 가게 이름 라벨링 뷰
+    private void initializeCalendarLabel(RelativeLayout storeListView, List<String> branchNames) {
+        for (int i = 0; i <branchNames.size(); i++) {
+            TextView branchTextView = null;
+            if (i == 0) {
+                storeListView.findViewById(R.id.store_circle1).setVisibility(View.VISIBLE);
+                branchTextView = (TextView) storeListView.findViewById(R.id.store_name1);
+            }
+            if (i == 1) {
+                storeListView.findViewById(R.id.store_circle2).setVisibility(View.VISIBLE);
+                branchTextView = (TextView) storeListView.findViewById(R.id.store_name2);
+            }
+            if (i == 2) {
+                storeListView.findViewById(R.id.store_circle3).setVisibility(View.VISIBLE);
+                branchTextView = (TextView) storeListView.findViewById(R.id.store_name3);
+            }
+            if (i == 3) {
+                storeListView.findViewById(R.id.store_circle4).setVisibility(View.VISIBLE);
+                branchTextView = (TextView) storeListView.findViewById(R.id.store_name4);
+            }
+            if (i == 4) {
+                storeListView.findViewById(R.id.store_circle5).setVisibility(View.VISIBLE);
+                branchTextView = (TextView) storeListView.findViewById(R.id.store_name5);
+            }
+            branchTextView.setVisibility(View.VISIBLE);
+            branchTextView.setText(branchNames.get(i).toString().split(" ")[0]);
+        }
+    }
+
+    private void addLabelsOnCalendar(List<List<String>> datesAndBranches, List<String> branchNames) {
+        for (List<String> lst: datesAndBranches) {
+            String day = String.valueOf(Integer.parseInt(lst.get(1)));
+            String branchName = lst.get(0);
+
+            for (int i = 0; i < gridView.getChildCount(); i++) {
+                View gridItem = gridView.getChildAt(i);
+
+                if (gridItem != null) {
+                    TextView tvItemGridView = gridItem.findViewById(R.id.tv_item_gridview);
+                    if (tvItemGridView.getText().toString().equals(day)) {
+
+                        LinearLayout iconLayout = gridItem.findViewById(R.id.iconLayout);
+
+                        ImageView imageView = new ImageView(requireContext());
+                        int idx = branchNames.indexOf(branchName);
+                        if (idx == 0) {
+                            imageView.setImageResource(R.drawable.oval_style1);
+                        } else if (idx == 1) {
+                            imageView.setImageResource(R.drawable.oval_style2);
+                        } else if (idx == 2) {
+                            imageView.setImageResource(R.drawable.oval_style3);
+                        } else if (idx == 3) {
+                            imageView.setImageResource(R.drawable.oval_style4);
+                        } else if (idx == 4) {
+                            imageView.setImageResource(R.drawable.oval_style5);
+                        }
+                        iconLayout.addView(imageView);
+                    }
+                }
+            }
+        }
     }
 
     // firestore 불러오는 함수
@@ -139,11 +264,6 @@ public class CalendarFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
-    /**
-     * 해당 월에 표시할 일 수 구함
-     *
-     * @param month
-     */
     private void setCalendarDate(int month) {
         mCal.set(Calendar.MONTH, month - 1);
 
@@ -153,22 +273,12 @@ public class CalendarFragment extends Fragment {
 
     }
 
-    /**
-     * 그리드뷰 어댑터
-     *
-     */
     private class GridAdapter extends BaseAdapter {
 
         private final List<String> list;
 
         private final LayoutInflater inflater;
 
-        /**
-         * 생성자
-         *
-         * @param context
-         * @param list
-         */
         public GridAdapter(Context context, List<String> list) {
             this.list = list;
             this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

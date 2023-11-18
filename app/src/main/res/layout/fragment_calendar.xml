@@ -12,7 +12,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/month_wage"
@@ -21,7 +21,7 @@
                 android:background="@drawable/textview_border"
                 android:fontFamily="@font/bold"
                 android:padding="10dp"
-                android:text="10월 월급 달력"
+                android:text="00월 월급 달력"
                 android:textColor="@color/black"
                 android:textSize="27sp" />
 
@@ -37,6 +37,7 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:id="@+id/exp_wage_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/month_wage"
@@ -53,19 +54,116 @@
                 android:layout_alignParentRight="true">
 
                 <ImageView
-                    android:id="@+id/store_circle"
+                    android:visibility="invisible"
+                    android:id="@+id/store_circle1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/oval_style" />
+                    android:src="@drawable/oval_style1" />
 
                 <TextView
+                    android:visibility="invisible"
+                    android:id="@+id/store_name1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_toRightOf="@id/store_circle"
-                    android:layout_alignBaseline="@id/store_circle"
-                    android:text="파리바게뜨"
+                    android:layout_toRightOf="@id/store_circle1"
+                    android:layout_alignBaseline="@id/store_circle1"
+                    android:text="가게이름1"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:id="@+id/store_circle2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/oval_style2"
+                    android:layout_below="@id/store_circle1"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:visibility="invisible"
+                    android:id="@+id/store_name2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/store_name1"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toRightOf="@id/store_circle2"
+                    android:layout_alignBaseline="@id/store_circle2"
+                    android:text="가게이름2"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:id="@+id/store_circle3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/oval_style3"
+                    android:layout_below="@id/store_circle2"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:visibility="invisible"
+                    android:id="@+id/store_name3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/store_name2"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toRightOf="@id/store_circle3"
+                    android:layout_alignBaseline="@id/store_circle3"
+                    android:text="가게이름3"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:id="@+id/store_circle4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/store_circle3"
+                    android:src="@drawable/oval_style4"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:visibility="invisible"
+                    android:id="@+id/store_name4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/store_name3"
+                    android:layout_toRightOf="@id/store_circle4"
+                    android:text="가게이름4"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:id="@+id/store_circle5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/store_circle4"
+                    android:src="@drawable/oval_style5"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:visibility="invisible"
+                    android:id="@+id/store_name5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@id/store_name4"
+                    android:layout_toRightOf="@id/store_circle5"
+                    android:text="가게이름5"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
 
