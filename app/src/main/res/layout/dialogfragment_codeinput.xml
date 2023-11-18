@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/lightblue"
+    android:background="@color/lightgray"
     android:gravity="center"
     android:minWidth="300dp"
     android:orientation="vertical"
@@ -50,7 +50,7 @@
         android:textSize="20sp"></EditText>
 
     <LinearLayout
-        android:background="@color/lightblue"
+        android:background="@color/lightgray"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="12dp"
         android:layout_gravity="right"

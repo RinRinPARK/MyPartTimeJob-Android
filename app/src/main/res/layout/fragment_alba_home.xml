@@ -139,21 +139,22 @@
         android:layout_marginRight="10dp"
         ></View>
 
-    <ScrollView
-        android:id="@+id/albaHome_ScrollView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/workLogRecyclerView"
+        android:layout_below="@id/albaHome_Line"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:layout_below="@id/albaHome_Line">
+        android:layout_height="380sp"
+        android:layout_marginTop="4sp"
+        android:layout_marginBottom="4sp">
 
-
-    </ScrollView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <View
         android:id="@+id/albaHome_Line2"
         android:layout_width="380dp"
         android:layout_height="3dp"
         android:background="#C9000000"
-        android:layout_below="@id/albaHome_ScrollView"
+        android:layout_below="@id/workLogRecyclerView"
         android:backgroundTint="@color/lightgray"
         android:layout_alignLeft="@id/albaHome_workLog"
         android:layout_marginRight="10dp"
@@ -165,7 +166,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/albaHome_Line2"
         android:gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         >
         <Button
             android:id="@+id/inputWorkedTimeBtn"

@@ -4,10 +4,4 @@
             android:fontWeight="200"
         android:font="@font/regular">
     </font>
-
-<!--    <font android:fontStyle="normal"-->
-<!--        android:fontWeight="400"-->
-<!--        android:font="@font/bold">-->
-<!--    </font>-->
-
 </font-family>

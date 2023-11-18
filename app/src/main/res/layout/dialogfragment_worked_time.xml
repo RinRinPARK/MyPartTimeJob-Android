@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/lightblue"
+    android:background="@color/lightgray"
     android:gravity="center"
     android:minWidth="300dp"
     android:orientation="vertical">
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginBottom="40dp">
+        android:layout_marginBottom="20dp">
         <TextView
             android:textColor="@color/black"
             android:layout_width="match_parent"
@@ -138,7 +138,7 @@
 </LinearLayout>
 
     <LinearLayout
-        android:background="@color/lightblue"
+        android:background="@color/lightgray"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="12dp"
         android:layout_gravity="right"
@@ -148,9 +148,9 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/inputButton"
             android:background="@drawable/dialog_button_custom"
             android:layout_marginRight="10dp"
-            android:id="@+id/inputButton"
             android:layout_height="45dp"
             android:layout_width="0dp"
             android:layout_weight="1"
