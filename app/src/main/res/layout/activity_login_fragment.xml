@@ -3,49 +3,161 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/fullscreenBackgroundColor"
+    android:background="#ffffff"
     android:theme="@style/ThemeOverlay.My_Parttime.FullscreenContainer"
     tools:context=".LoginFragment">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/dummy_content"
-        android:textColor="?attr/fullscreenTextColor"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="170dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:orientation="vertical">
 
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="@style/Widget.Theme.My_Parttime.ButtonBar.Fullscreen"
+        <TextView
+            android:id="@+id/logintext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+            android:layout_marginBottom="25dp"
+            android:text="회원 로그인"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:textAlignment="center"
+            android:gravity="center_horizontal" />
 
-            <Button
-                android:id="@+id/dummy_button"
-                style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="0dp"
+        <EditText
+            android:id="@+id/editID"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/login_border"
+            android:ems="14"
+            android:hint=" 아이디"
+            android:inputType="textPersonName"
+             />
+
+        <EditText
+            android:id="@+id/ediPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/login_border"
+            android:ems="14"
+            android:hint=" 비밀번호"
+            android:inputType="textPassword" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="5dp">
+            <CheckBox
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dummy_button" />
+                android:text="저장하기"
+                android:layout_centerVertical="true"
+                android:alpha="0.7"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비밀번호 잊으셨나요?"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true">
 
-        </LinearLayout>
-    </FrameLayout>
+            </TextView>
 
+        </RelativeLayout>
+            
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/loginbutton"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/box_login"
+            android:text="로그인"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/signin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:text="회원가입"
+            android:textColor="@color/black"
+            android:textSize="13dp"
+            android:textStyle="bold" />
+        <View
+
+            android:layout_marginTop="40dp"
+            android:layout_width="250dp"
+            android:layout_height="2dp"
+            android:layout_gravity="center"
+            android:background="@color/blue"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Or login with"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:alpha="0.7">
+
+        </TextView>
+            
+      
+
+
+        
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center"
+           android:orientation="horizontal"
+           >
+           <ImageView
+               android:layout_width="40dp"
+               android:layout_height="40dp"
+               android:layout_margin="20dp"
+               android:src="@drawable/google_icon"
+
+               >
+
+           </ImageView>
+           <ImageView
+               android:layout_width="40dp"
+               android:layout_height="40dp"
+               android:layout_margin="20dp"
+               android:src="@drawable/kakaotalk_icon"
+
+               >
+
+           </ImageView>
+
+
+       </LinearLayout>
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="80dp"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:text=" Alba Plus"
+            android:textColor="@color/blue"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
 </FrameLayout>
