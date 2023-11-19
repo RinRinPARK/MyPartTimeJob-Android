@@ -14,16 +14,26 @@ public class Work {
     // 일한 날짜
     private Date date;
     // 일한 시간 (ex: 3.5, 4 .. etc)
-    private float workTime;
+    private double workTime;
+
+    private String branchName;
+
+    private long wage;
 
     @ServerTimestamp
     private Timestamp timestamp;
 
-    public Work( long userId, String participationCode, Date date, float workTime) {
+    public Work(){
+        //no-argument constructor 필요
+    }
+
+    public Work( long userId, String participationCode, Date date, double workTime, String branchName, long wage) {
         this.userId = userId;
         this.participationCode = participationCode;
         this.date = date;
         this.workTime = workTime;
+        this.branchName = branchName;
+        this.wage = wage;
     }
 
     public long getUserId() {
@@ -34,11 +44,19 @@ public class Work {
         return participationCode;
     }
 
-    public float getWorkTime() {
+    public double getWorkTime() {
         return workTime;
     }
 
     public Date getDate() {
         return date;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public long getWage() {
+        return wage;
     }
 }

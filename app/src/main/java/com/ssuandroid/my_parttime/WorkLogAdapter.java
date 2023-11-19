@@ -9,11 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class WorkLogAdapter extends RecyclerView.Adapter<WorkLogAdapter.WorkLogViewHolder> {
-    private ArrayList<String> workLogList;
-    WorkLogAdapter(ArrayList<String> List){
+    private ArrayList<Work> workLogList;
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+    WorkLogAdapter(ArrayList<Work> List){
         Log.d("adapter"," worklogadapter working..");
         this.workLogList= List;
     }
@@ -28,7 +32,12 @@ public class WorkLogAdapter extends RecyclerView.Adapter<WorkLogAdapter.WorkLogV
 
     @Override
     public void onBindViewHolder(@NonNull WorkLogAdapter.WorkLogViewHolder holder, int position) {
-        holder.earnedMoney.setText(workLogList.get(position));
+        Date date = workLogList.get(position).getDate();
+        String formattedDate = sdf.format(date);
+
+        holder.albaDate.setText(formattedDate);
+        holder.earnedMoney.setText( Integer.toString ((int)(workLogList.get(position).getWage() * workLogList.get(position).getWorkTime())) );
+        holder.workedTime.setText( (Double.toString(workLogList.get(position).getWorkTime())) + "시간");
     }
 
     @Override
@@ -49,6 +58,13 @@ public class WorkLogAdapter extends RecyclerView.Adapter<WorkLogAdapter.WorkLogV
             earnedMoney = (TextView)itemView.findViewById(R.id.earnedMoney);
             workedTime= (TextView)itemView.findViewById(R.id.workedTime);
 
+            //item 누르면 수정 가능하도록?
+//            itemView.setOnClickListener(new View.OnClickListener(){
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
         }
     }
 }

@@ -56,6 +56,8 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <RelativeLayout
+        android:id="@+id/PlusButton"
+        android:clickable="true"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
@@ -71,11 +73,10 @@
 
         </ImageView>
         <Button
-            android:id="@+id/PlusButton"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:background="@drawable/plus_circle"
-            android:clickable="true"
+            android:clickable="false"
             android:focusable="true"
             android:elevation="50dp">
         </Button>

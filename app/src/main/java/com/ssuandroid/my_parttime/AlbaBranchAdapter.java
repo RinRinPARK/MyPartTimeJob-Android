@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.ViewHolder>{
 
-    private ArrayList<String> branchNameList;
+    private ArrayList<Alba> albaList;
 
-    public AlbaBranchAdapter(ArrayList<String> List){
+    public AlbaBranchAdapter(ArrayList<Alba> List){
         Log.d("adapter"," worklogadapter working 1 ..");
-        this.branchNameList = List; //HomeFragment로부터 건네받은 String 타입 데이터를 list 객체에 할당
+        this.albaList = List; //HomeFragment로부터 건네받은 Alba 객체를 list 객체에 할당
     }
 
     @NonNull
@@ -30,15 +30,19 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
     //recyclerView가 특정 행에 대한 ViewHolder을 요구
     @Override
     public void onBindViewHolder(@NonNull AlbaBranchAdapter.ViewHolder holder, int position) { //position: 몇번째 행인지?
+        Log.d("ymj", "onBindViewHolder"+position);
         //매개변수로 위에서 만든 holder을 받는다. 이를 사용하여 setText 해주어야 한다.
-        holder.albaName.setText(branchNameList.get(position)); //db 사용시 알맞게 getter 사용할 것. 우선은 branchName만 변경
+        holder.albaName.setText(albaList.get(position).getBranchName().toString()); //db 사용시 알맞게 getter 사용할 것. 우선은 branchName만 변경
+        Log.d("ymj", "셋팅 알맞게 됨");
+        holder.albaParticipationCode.setText(albaList.get(position).getParticipationCode().toString());
     }
 
 
     //행이 몇 개인가?
     @Override
     public int getItemCount() {
-        return branchNameList.size();
+        Log.d("ymj", "in Adapter"+albaList.size());
+        return albaList.size();
     }
 
 
@@ -53,7 +57,7 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
          * @param itemView
          */
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) { //생성자
             super(itemView);
             albaName = (TextView)itemView.findViewById(R.id.albaName);
             albaParticipationCode=(TextView)itemView.findViewById(R.id.albaParticipationCode);

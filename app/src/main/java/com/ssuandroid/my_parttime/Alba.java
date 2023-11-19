@@ -25,6 +25,10 @@ public class Alba {
         this.wage = wage;
     }
 
+    public Alba(){
+        //no-argument constructor missing 에러 해결
+    }
+
     public long getUserId() {
         return userId;
     }
