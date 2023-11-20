@@ -37,8 +37,8 @@
     </LinearLayout>
 
     <EditText
-        android:backgroundTint="@color/black"
         android:id="@+id/hourly_rate"
+        android:backgroundTint="@color/black"
         android:layout_margin="30dp"
         android:padding="15dp"
         android:layout_width="match_parent"

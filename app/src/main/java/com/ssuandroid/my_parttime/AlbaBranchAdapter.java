@@ -14,10 +14,11 @@ import java.util.ArrayList;
 public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.ViewHolder>{
 
     private ArrayList<Alba> albaList;
+    private MainActivity mainActivity; //어댑터에서 mainActivity의 함수 호출이 필요 -> 이 부분은 수정 예정
 
-    public AlbaBranchAdapter(ArrayList<Alba> List){
-        Log.d("adapter"," worklogadapter working 1 ..");
+    public AlbaBranchAdapter(ArrayList<Alba> List, MainActivity activity){
         this.albaList = List; //HomeFragment로부터 건네받은 Alba 객체를 list 객체에 할당
+        this.mainActivity = activity;
     }
 
     @NonNull
@@ -30,10 +31,8 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
     //recyclerView가 특정 행에 대한 ViewHolder을 요구
     @Override
     public void onBindViewHolder(@NonNull AlbaBranchAdapter.ViewHolder holder, int position) { //position: 몇번째 행인지?
-        Log.d("ymj", "onBindViewHolder"+position);
         //매개변수로 위에서 만든 holder을 받는다. 이를 사용하여 setText 해주어야 한다.
         holder.albaName.setText(albaList.get(position).getBranchName().toString()); //db 사용시 알맞게 getter 사용할 것. 우선은 branchName만 변경
-        Log.d("ymj", "셋팅 알맞게 됨");
         holder.albaParticipationCode.setText(albaList.get(position).getParticipationCode().toString());
     }
 
@@ -41,7 +40,6 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
     //행이 몇 개인가?
     @Override
     public int getItemCount() {
-        Log.d("ymj", "in Adapter"+albaList.size());
         return albaList.size();
     }
 
@@ -52,10 +50,6 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
         //ViewHolder을 통해서 View를 얻을 수 있다.
         private TextView albaName;
         private TextView albaParticipationCode;
-        /***
-         * DB에서 데이터가져와서  holder에 저장
-         * @param itemView
-         */
 
         public ViewHolder(@NonNull View itemView) { //생성자
             super(itemView);
@@ -69,8 +63,8 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
                 public void onClick(View v){
                     int pos = getAbsoluteAdapterPosition();
                     if (pos!= RecyclerView.NO_POSITION){
-                        Log.d("ymj", "layout 눌림");
                         //특정 albahomefragment로 이동하도록 조절
+                        mainActivity.fragmentChange(pos);
                     }
                 }
             });

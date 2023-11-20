@@ -36,6 +36,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
     FirebaseFirestore db;
     Button workAddBtn;
     Button moveToDaetaCalendar;
+    int pos; //내가 현재 존재하는 Alba의 Alba collection에서의 문서 ID (0부터 시작, 4까지)
 
     @Nullable
     @Override
@@ -44,6 +45,12 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
         setHasOptionsMenu(true);
 
         initializeCloudFirestore(); //db에 firestore instance 얻어옴
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            pos = Integer.parseInt(arguments.getString("albaItemId", "0"));
+            Log.d("ymj", pos + " 얻음");
+        }
+
         getWorkObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
 
         //recyclerView 사용을 위한 초기 작업
@@ -64,6 +71,8 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
         Log.d("ymj", "db instance 얻음");
     }
 
+
+    //알맞은 Alba에서 workLog 가져오도록 수정 예정
     private void getWorkObject(){
         db.collection("Work")
                 .get()
@@ -78,6 +87,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
                             adapter_workLog = new WorkLogAdapter(workArrayList);
                             recyclerViewWorkLog.setLayoutManager(new LinearLayoutManager(getActivity()));
                             recyclerViewWorkLog.setAdapter(adapter_workLog);
+
                         }
                         else {
                             Log.d("ymj", "Error getting documents: ", task.getException());
@@ -94,7 +104,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         if (v.getId()==R.id.inputWorkedTimeBtn){
             WorkedTimeDialogFragment workedTimeDialogFragment = new WorkedTimeDialogFragment();
-            workedTimeDialogFragment.show(getActivity().getSupportFragmentManager(), "TAG");
+            workedTimeDialogFragment.show(getActivity().getSupportFragmentManager(), "WORKED_TIME_TAG");
         }
         else if (v.getId()==R.id.moveToDaetaCalendarBtn){
             //대타 캘린더로 이동하기

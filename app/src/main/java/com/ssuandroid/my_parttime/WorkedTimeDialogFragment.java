@@ -66,7 +66,7 @@ public class WorkedTimeDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onClick(View v) {
-        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("tag");
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("WORKED_TIME_TAG");
         if (v.getId()==R.id.closeButton){
             if (fragment!=null){
                 DialogFragment dialogFragment = (DialogFragment) fragment;

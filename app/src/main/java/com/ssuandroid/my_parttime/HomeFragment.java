@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +32,7 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class HomeFragment extends Fragment implements View.OnClickListener, CodeInputDialogFragment.MyFragmentInterfacer, HourlyRateDialogFragment.FragmentInterfacer{
 
     //branch의 목록을 띄울 recyclerView
     public RecyclerView recyclerView;
@@ -41,6 +42,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     ArrayList<Alba> albaArrayList = new ArrayList<>(); //Alba Object를 db로부터 받아와서 리턴함.
     FirebaseFirestore db;
 
+    String newAlbaCode;
+    long newAlbaWage;
+    String branchName;
 
 
     @Override
@@ -90,7 +94,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private void initializeCloudFirestore() {
         // Access a Cloud Firestore instance from your Activity
         db = FirebaseFirestore.getInstance(); //firestore의 인스턴스를 db로 얻음
-        Log.d("ymj", "db instance 얻음");
     }
 
     private void getAlbaObject(){
@@ -106,7 +109,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             }
 
                             //어댑터 초기화 및 설정을 이 블록 내부로 이동시켜서 데이터가 받아져야만 recyclerView가 구성되도록 만듦
-                            adapter_albaBranch = new AlbaBranchAdapter(albaArrayList);
+                            adapter_albaBranch = new AlbaBranchAdapter(albaArrayList, (MainActivity) getActivity());
                             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                             recyclerView.setAdapter(adapter_albaBranch);}
                             else {
@@ -123,10 +126,69 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-        if (v.getId()==R.id.PlusButton){
-            Log.d("ymj", "here");
-            CodeInputDialogFragment codeInputDialogFragment = new CodeInputDialogFragment();
-            codeInputDialogFragment.show(getActivity().getSupportFragmentManager(),"HOME_TAG");
+        if (v.getId() == R.id.PlusButton) {
+            CodeInputDialogFragment codeInputDialogFragment = CodeInputDialogFragment.getInstance();
+            codeInputDialogFragment.setFragmentInterfacer(this); // HomeFragment에서 인터페이스 구현
+
+            codeInputDialogFragment.show(getParentFragmentManager(), "CODE_TAG");
         }
+    }
+
+    // MyFragmentInterfacer 구현: 알바 코드 dialog를 띄우고 데이터를 받기 위한 인터페이스. 코드 데이터를 받으면
+    // 시급 dialog 또한 homefragment에서 띄운다
+    @Override
+    public void onButtonClick(String input) {
+        Log.d("ymj", input + " 알바 코드 잘 받음");
+        newAlbaCode= input;
+        // 두 번째 다이얼로그 띄우기
+        HourlyRateDialogFragment hourlyRateDialogFragment = new HourlyRateDialogFragment();
+        hourlyRateDialogFragment.setFragmentInterfacer(this); // HomeFragment에서 인터페이스 구현
+
+        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+        hourlyRateDialogFragment.show(transaction, "WAGE_TAG");
+    }
+
+    // FragmentInterfacer 구현: 시급 dialog로부터 데이터를 받기 위한 인터페이스
+    @Override
+    public void onWageButtonClick(long input) {
+        newAlbaWage = input;
+        Log.d("ymj", input + " 시급 잘 받음");
+        // HomeFragment에서 두 번째 다이얼로그에서 받은 데이터 처리
+
+        //두번째 다이얼로그로부터 데이터를 전부 잘 받았으면 새로운 Alba 객체를 생성
+        newAlbaObject();
+    }
+
+    public void newAlbaObject(){
+        //임시 userId
+        int userId= 1;
+
+        //얻은 participationCode를 통해 branchName을 알아낸다
+        db.collection("Branch")
+                    .whereEqualTo("participationCode", newAlbaCode)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Log.d("ymj", document.getId() + " => " + document.getData());
+                                    String fieldData = document.getString("branchName");
+                                    //여기서 바로 변수에 할당하려고 하면 exception 남.
+
+                                    branchName = fieldData;
+
+                                    //Firebase의 데이터는 비동기적으로 처리된다.
+                                    //즉, 데이터를 받아 오는 쿼리는 시간이 지연될 수 있다.
+                                    //무조건 branchName 데이터를 다 받아오고 나서 새로운 Alba 객체를 생성해야
+                                    //branchName에 null이 들어간 상태로 새로운 객체가 생성되는 일을 막을 수 있다.
+                                    Alba alba= new Alba(userId, branchName, newAlbaCode, newAlbaWage);
+                                    db.collection("Alba").document(alba.getParticipationCode()).set(alba);
+                                }
+                            } else {
+                                Log.d("ymj", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
     }
 }
