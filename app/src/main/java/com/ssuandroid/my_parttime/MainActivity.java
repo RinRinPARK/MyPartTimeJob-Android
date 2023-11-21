@@ -85,12 +85,15 @@ public class MainActivity extends AppCompatActivity{
 
 
     //recyclerview 터치시 fragment 변경
-    public void fragmentChange(int pos){
+    public void fragmentChange(Alba selectedAlba){
+
+        Log.d("ymj", selectedAlba.getBranchName()+"선택되었음을 받음");
         Bundle bundle = new Bundle();
-        bundle.putString(Integer.toString(pos), "albaItemId"); //몇번째 alba item이 선택된건가? (=문서 ID)
+        bundle.putSerializable("selectedAlba",selectedAlba); //선택된 Alba item을 통째로 건넨다
 
         AlbaHomeFragment albaHomeFragment = new AlbaHomeFragment();
         albaHomeFragment.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, albaHomeFragment)
                 .commit();

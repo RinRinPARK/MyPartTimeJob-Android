@@ -14,7 +14,7 @@
         android:layout_marginTop="18dp"
         android:padding="10dp"
         android:background="@drawable/textview_border"
-        android:text="파리바게뜨 숭실대점"
+        android:text=" "
         android:textSize="30dp"
         android:fontFamily="@font/bold"
         android:layout_marginBottom="70dp">
@@ -68,6 +68,7 @@
             android:textColor="@color/black">
         </TextView>
         <TextView
+            android:id="@+id/albaHome_wage"
             android:paddingLeft="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -3,6 +3,7 @@ package com.ssuandroid.my_parttime;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,13 +30,23 @@ public class WorkedTimeDialogFragment extends DialogFragment implements View.OnC
     NumberPicker numberPicker;
     TextView inputDate;
     String[] workedTime= {"0.0", "0.5", "1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "4.5", "5.0", "5.5", "6.0", "6.5", "7.0", "7.5", "8.0", "8.5", "9.0", "9.5", "10.0", "10.5", "11.0", "11.5", "12.0", "12.5", "13.0", "13.5", "14.0", "14.5", "15.0", "15.5", "16.0", "16.5", "17.0", "17.5", "18.0", "18.5", "19.0", "19.5", "20.0", "20.5", "21.0", "21.5", "22.0", "22.5", "23.0", "23.5", "24.0"};
-    final SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
+    final SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy.MM.dd");
     String result = dataFormat.format(curDate);
 
     public WorkedTimeDialogFragment() {}//생성자
     public static WorkedTimeDialogFragment getInstance() {
         WorkedTimeDialogFragment e = new WorkedTimeDialogFragment();
         return e;
+    }
+
+    public interface WorkTimeFragmentInterfacer {
+        void newWorkBtn(String date, String workedTime);
+    }
+
+    private WorkTimeFragmentInterfacer workTimeFragmentInterfacer;
+
+    public void setFragmentInterfacer(WorkTimeFragmentInterfacer workTimeFragmentInterfacer){
+        this.workTimeFragmentInterfacer = workTimeFragmentInterfacer;
     }
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,7 +86,11 @@ public class WorkedTimeDialogFragment extends DialogFragment implements View.OnC
         }
         else if (v.getId()==R.id.inputButton){
             if (fragment!=null){
-                //input 전달하는 코드 추가해야 함
+                String workedDate = inputDate.getText().toString();
+                String workedTime = Integer.toString(numberPicker.getValue());
+                Log.d("ymj", inputDate+"받음"+workedTime);
+                workTimeFragmentInterfacer.newWorkBtn(workedDate, workedTime);
+
                 DialogFragment dialogFragment = (DialogFragment) fragment;
                 dialogFragment.dismiss();
             }

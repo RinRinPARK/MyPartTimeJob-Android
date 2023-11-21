@@ -63,8 +63,9 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
                 public void onClick(View v){
                     int pos = getAbsoluteAdapterPosition();
                     if (pos!= RecyclerView.NO_POSITION){
+                        Log.d("ymj", pos+"번째 레이아웃임");
                         //특정 albahomefragment로 이동하도록 조절
-                        mainActivity.fragmentChange(pos);
+                        mainActivity.fragmentChange(albaList.get(pos));
                     }
                 }
             });

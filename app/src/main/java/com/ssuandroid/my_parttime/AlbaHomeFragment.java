@@ -15,18 +15,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.checkerframework.checker.units.qual.A;
+import org.w3c.dom.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
+public class AlbaHomeFragment extends Fragment implements View.OnClickListener, WorkedTimeDialogFragment.WorkTimeFragmentInterfacer {
     //근무 목록을 띄울 recyclerView
     public RecyclerView recyclerViewWorkLog;
     //recyclerView가 필요로 하는 adapter
@@ -36,20 +47,34 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
     FirebaseFirestore db;
     Button workAddBtn;
     Button moveToDaetaCalendar;
-    int pos; //내가 현재 존재하는 Alba의 Alba collection에서의 문서 ID (0부터 시작, 4까지)
+    TextView albaTitle;
+    TextView albaWage;
+    TextView albaWorkedTime;
+    TextView albaSalary;
+    Alba selectedAlba;
+    String selectedAlbaName;
+    double totalWorkedTime = 0;
+
+    //새로운 Work 객체 만들기 위해 사용
+    String workedDate;
+    double workedTime;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alba_home, container, false);
+        return inflater.inflate(R.layout.fragment_alba_home, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
         initializeCloudFirestore(); //db에 firestore instance 얻어옴
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            pos = Integer.parseInt(arguments.getString("albaItemId", "0"));
-            Log.d("ymj", pos + " 얻음");
-        }
+
+        Bundle bundle = getArguments();
+        selectedAlba = (Alba) bundle.getSerializable("selectedAlba");
+        selectedAlbaName = selectedAlba.getBranchName();
 
         getWorkObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
 
@@ -63,7 +88,37 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
         workAddBtn.setOnClickListener(this);
         moveToDaetaCalendar.setOnClickListener(this);
 
-        return view;
+        //값을 바꿔줘야 하는 텍스트뷰 받기
+        albaTitle = (TextView) view.findViewById(R.id.AlbaHome_title);
+        albaWage = (TextView) view.findViewById(R.id.albaHome_HourlyRate);
+        albaWorkedTime = (TextView) view.findViewById(R.id.albaHome_workedTime);
+        albaSalary = (TextView) view.findViewById(R.id.albaHome_salary);
+
+        //값을 바로 받아 와서 바꿔줌
+        albaTitle.setText(selectedAlba.getBranchName());
+        albaWage.setText(Long.toString(selectedAlba.getWage()));
+
+
+        // branchName을 이용하여 Work 컬렉션에서 총 일한 시간과 총 예상 월급을 계산
+        db.collection("Work")
+                .whereEqualTo("branchName", selectedAlba.getBranchName())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                totalWorkedTime += ((Number)document.get("workTime")).doubleValue();
+                            }
+                            // 계산이 완료된 후에 albaWorkedTime을 설정
+                            albaWorkedTime.setText(Double.toString(totalWorkedTime));
+                            albaSalary.setText (( Integer.toString ((int)(selectedAlba.getWage() * totalWorkedTime)) ));
+                        } else {
+                            Log.e("ymj", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
     }
 
     private void initializeCloudFirestore(){
@@ -75,6 +130,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
     //알맞은 Alba에서 workLog 가져오도록 수정 예정
     private void getWorkObject(){
         db.collection("Work")
+                .whereEqualTo("branchName", selectedAlbaName)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -96,18 +152,37 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener{
                 });}
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    @Override
     public void onClick(View v) {
         if (v.getId()==R.id.inputWorkedTimeBtn){
             WorkedTimeDialogFragment workedTimeDialogFragment = new WorkedTimeDialogFragment();
+            workedTimeDialogFragment.setFragmentInterfacer(this);
             workedTimeDialogFragment.show(getActivity().getSupportFragmentManager(), "WORKED_TIME_TAG");
         }
         else if (v.getId()==R.id.moveToDaetaCalendarBtn){
             //대타 캘린더로 이동하기
         }
     }
+
+    public void newWorkBtn(String date, String workedTime) {
+        this.workedDate= date;
+        this.workedTime = 0.5* Double.parseDouble(workedTime);
+        newWorkObject();
+    }
+
+    public void newWorkObject(){
+        //임시 userId
+        long userId=1;
+
+
+        //workedDate를 Date 객체로 만들어주어야함.
+        Date date= new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        try {
+            date = dateFormat.parse(workedDate);
+        } catch (ParseException e) {e.printStackTrace(); }
+
+        Work work = new Work(userId, selectedAlba.getParticipationCode(),date,  workedTime, selectedAlba.getBranchName(), selectedAlba.getWage());
+        db.collection("Work").document().set(work);
+    }
+
 }

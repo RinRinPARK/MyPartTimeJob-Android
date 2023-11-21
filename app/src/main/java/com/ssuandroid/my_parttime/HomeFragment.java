@@ -5,7 +5,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -49,47 +53,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d("ymj", "onCreateView_HomeFragment");
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-//        init(view); //dialogfragment와의 데이터 주고받기를 위해 추가
-
-        initializeCloudFirestore(); //db에 firestore instance 얻어옴
-        getAlbaObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
-
-        //recyclerView 사용을 위한 초기 작업: RecyclerView는 LayoutManager와 Adapter(ViewHolder을 포함하는)을 필요로 한다.
-        recyclerView = (RecyclerView) view.findViewById(R.id.albaListRecyclerView);
-        recyclerView.setHasFixedSize(true); //recyclerview의 크기는 고정되어 있음.
-
-        RelativeLayout newAlbaBtn = (RelativeLayout) view.findViewById(R.id.PlusButton);
-        newAlbaBtn.setOnClickListener(this);
-
-        Log.d("ymj", "list에 몇개 들어있는지: "+albaArrayList.size());
-
-        setHasOptionsMenu(true);
-        return view;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-
-//    public void init(View v){
-//        if (v!=null){
-//            Button newAlbaBtn = (Button) v.findViewById(R.id.PlusButton);
-//            newAlbaBtn.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    Log.d("ymj", "클릭 발생");
-//                    CodeInputDialogFragment codeInputDialogFragment = CodeInputDialogFragment.getInstance();
-//                    codeInputDialogFragment.setFragmentInterfacer(new CodeInputDialogFragment.MyFragmentInterfacer() {
-//                        @Override
-//                        public void onButtonClick(String input) {
-//                            Toast.makeText(getContext(), "test."+input, Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                }
-//            });
-//        }
-//    }
 
     private void initializeCloudFirestore() {
         // Access a Cloud Firestore instance from your Activity
@@ -106,6 +72,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 albaArrayList.add(document.toObject(Alba.class));
                                 Log.d("ymj", "list에 added");
+                                updateUIVisibility(); //새로운 알바 추가! 문구 갱신을 위함
                             }
 
                             //어댑터 초기화 및 설정을 이 블록 내부로 이동시켜서 데이터가 받아져야만 recyclerView가 구성되도록 만듦
@@ -122,6 +89,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+//        init(view); //dialogfragment와의 데이터 주고받기를 위해 추가
+
+        initializeCloudFirestore(); //db에 firestore instance 얻어옴
+        getAlbaObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
+
+        //recyclerView 사용을 위한 초기 작업: RecyclerView는 LayoutManager와 Adapter(ViewHolder을 포함하는)을 필요로 한다.
+        recyclerView = (RecyclerView) view.findViewById(R.id.albaListRecyclerView);
+        recyclerView.setHasFixedSize(true); //recyclerview의 크기는 고정되어 있음.
+
+        RelativeLayout newAlbaBtn = (RelativeLayout) view.findViewById(R.id.PlusButton);
+        newAlbaBtn.setOnClickListener(this);
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -140,12 +121,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     public void onButtonClick(String input) {
         Log.d("ymj", input + " 알바 코드 잘 받음");
         newAlbaCode= input;
-        // 두 번째 다이얼로그 띄우기
-        HourlyRateDialogFragment hourlyRateDialogFragment = new HourlyRateDialogFragment();
-        hourlyRateDialogFragment.setFragmentInterfacer(this); // HomeFragment에서 인터페이스 구현
 
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        hourlyRateDialogFragment.show(transaction, "WAGE_TAG");
+        db.collection("Branch").whereEqualTo("participationCode", newAlbaCode).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            QuerySnapshot doc = task.getResult();
+                                if(doc.isEmpty()){
+                                    Log.d("ymj", "코드가 존재하지 않음");
+                                    //코드가 존재하지 않음 -> 다음 다이얼로그프래그먼트를 띄우지 않고 다이얼로그프래그먼트를 닫는다
+                                    CodeInputDialogFragment dialogFragment = (CodeInputDialogFragment) getFragmentManager().findFragmentByTag("CODE_TAG");
+                                    if (dialogFragment != null) {
+                                        dialogFragment.dismiss();
+                                    }
+                                    Toast toast = Toast.makeText(getContext(), "해당하는 알바 브랜치가 존재하지 않습니다.", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                                else {
+                                    Log.d("ymj", "올바른 코드 입력");
+                                    HourlyRateDialogFragment hourlyRateDialogFragment = new HourlyRateDialogFragment();
+                                    hourlyRateDialogFragment.setFragmentInterfacer(HomeFragment.this); // HomeFragment에서 인터페이스 구현
+
+                                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                                    hourlyRateDialogFragment.show(transaction, "WAGE_TAG");
+                            }
+                        }
+                    }
+                });
+        // 두 번째 다이얼로그 띄우기
     }
 
     // FragmentInterfacer 구현: 시급 dialog로부터 데이터를 받기 위한 인터페이스
@@ -160,6 +164,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     }
 
     public void newAlbaObject(){
+
         //임시 userId
         int userId= 1;
 
@@ -183,12 +188,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                                     //무조건 branchName 데이터를 다 받아오고 나서 새로운 Alba 객체를 생성해야
                                     //branchName에 null이 들어간 상태로 새로운 객체가 생성되는 일을 막을 수 있다.
                                     Alba alba= new Alba(userId, branchName, newAlbaCode, newAlbaWage);
-                                    db.collection("Alba").document(alba.getParticipationCode()).set(alba);
+                                    db.collection("Alba").document(alba.getBranchName()).set(alba);
                                 }
                             } else {
                                 Log.d("ymj", "Error getting documents: ", task.getException());
                             }
                         }
                     });
+    }
+
+    //알바가 하나도 없을 때를 위한 새로운 알바 추가 문구 설정
+    private void updateUIVisibility() {
+        View view = getView();
+        TextView textView = (TextView) view.findViewById(R.id.noAlbaState);
+        if (albaArrayList.size() == 0) {
+            textView.setVisibility(View.VISIBLE);
+        } else {
+            textView.setVisibility(View.GONE);
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUIVisibility();
     }
 }
