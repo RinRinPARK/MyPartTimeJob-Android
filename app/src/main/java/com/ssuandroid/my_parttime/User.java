@@ -8,6 +8,9 @@ public class User {
     // 유저의 id
     private long id;
 
+    // 유저의 이름
+    private String name;
+
     @ServerTimestamp
     private Timestamp timestamp;
 
@@ -17,5 +20,9 @@ public class User {
 
     public long getId() {
         return this.id;
+    }
+
+    public String getName() {
+        return name;
     }
 }
