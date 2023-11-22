@@ -123,7 +123,6 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
 
     private void initializeCloudFirestore(){
         db = FirebaseFirestore.getInstance(); //firestore의 인스턴스를 db로 얻음
-        Log.d("ymj", "db instance 얻음");
     }
 
 

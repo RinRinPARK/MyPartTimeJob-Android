@@ -86,8 +86,6 @@ public class MainActivity extends AppCompatActivity{
 
     //recyclerview 터치시 fragment 변경
     public void fragmentChange(Alba selectedAlba){
-
-        Log.d("ymj", selectedAlba.getBranchName()+"선택되었음을 받음");
         Bundle bundle = new Bundle();
         bundle.putSerializable("selectedAlba",selectedAlba); //선택된 Alba item을 통째로 건넨다
 

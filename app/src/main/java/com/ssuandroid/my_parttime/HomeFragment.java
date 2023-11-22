@@ -56,6 +56,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initializeCloudFirestore(); //db에 firestore instance 얻어옴
+        getAlbaObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
+
+        //recyclerView 사용을 위한 초기 작업: RecyclerView는 LayoutManager와 Adapter(ViewHolder을 포함하는)을 필요로 한다.
+        recyclerView = (RecyclerView) view.findViewById(R.id.albaListRecyclerView);
+        recyclerView.setHasFixedSize(true); //recyclerview의 크기는 고정되어 있음.
+
+        RelativeLayout newAlbaBtn = (RelativeLayout) view.findViewById(R.id.PlusButton);
+        newAlbaBtn.setOnClickListener(this);
+
+        setHasOptionsMenu(true);
+    }
+
 
     private void initializeCloudFirestore() {
         // Access a Cloud Firestore instance from your Activity
@@ -71,7 +88,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 albaArrayList.add(document.toObject(Alba.class));
-                                Log.d("ymj", "list에 added");
                                 updateUIVisibility(); //새로운 알바 추가! 문구 갱신을 위함
                             }
 
@@ -86,24 +102,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                     });
                 }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-//        init(view); //dialogfragment와의 데이터 주고받기를 위해 추가
-
-        initializeCloudFirestore(); //db에 firestore instance 얻어옴
-        getAlbaObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
-
-        //recyclerView 사용을 위한 초기 작업: RecyclerView는 LayoutManager와 Adapter(ViewHolder을 포함하는)을 필요로 한다.
-        recyclerView = (RecyclerView) view.findViewById(R.id.albaListRecyclerView);
-        recyclerView.setHasFixedSize(true); //recyclerview의 크기는 고정되어 있음.
-
-        RelativeLayout newAlbaBtn = (RelativeLayout) view.findViewById(R.id.PlusButton);
-        newAlbaBtn.setOnClickListener(this);
-
-        setHasOptionsMenu(true);
-    }
 
     @Override
     public void onClick(View v) {
@@ -119,7 +117,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     // 시급 dialog 또한 homefragment에서 띄운다
     @Override
     public void onButtonClick(String input) {
-        Log.d("ymj", input + " 알바 코드 잘 받음");
         newAlbaCode= input;
 
         db.collection("Branch").whereEqualTo("participationCode", newAlbaCode).get()
@@ -135,7 +132,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                                     if (dialogFragment != null) {
                                         dialogFragment.dismiss();
                                     }
-                                    Toast toast = Toast.makeText(getContext(), "해당하는 알바 브랜치가 존재하지 않습니다.", Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(getContext(), "해당 알바 브랜치가 존재하지 않습니다.", Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
                                 else {
@@ -156,7 +153,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     @Override
     public void onWageButtonClick(long input) {
         newAlbaWage = input;
-        Log.d("ymj", input + " 시급 잘 받음");
         // HomeFragment에서 두 번째 다이얼로그에서 받은 데이터 처리
 
         //두번째 다이얼로그로부터 데이터를 전부 잘 받았으면 새로운 Alba 객체를 생성
