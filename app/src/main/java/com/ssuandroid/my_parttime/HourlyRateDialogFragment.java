@@ -1,24 +1,36 @@
 package com.ssuandroid.my_parttime;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 public class HourlyRateDialogFragment extends DialogFragment implements View.OnClickListener{
-//    implements View.OnClickListener // - onClick() 함수 주석 제거 후 사용
-
+    private EditText editText;
     public HourlyRateDialogFragment() {}//생성자
     public static HourlyRateDialogFragment getInstance() {
             HourlyRateDialogFragment e = new HourlyRateDialogFragment();
             return e;
         }
 
+
+        //homefragment에 데이터 넘겨주기 위한 인터페이스
+    public interface FragmentInterfacer {
+        void onWageButtonClick(long input);
+      }
+
+      private FragmentInterfacer fragmentInterfacer;
+
+    public void setFragmentInterfacer(FragmentInterfacer fragmentInterfacer){
+        this.fragmentInterfacer = fragmentInterfacer;
+    }
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View v= inflater.inflate(R.layout.dialogfragment_hourlyrate, container);
@@ -29,12 +41,16 @@ public class HourlyRateDialogFragment extends DialogFragment implements View.OnC
         Button inputButton = (Button) v.findViewById(R.id.hourlyRateBtnInput);
         inputButton.setOnClickListener(this);
 
+        editText = (EditText) v.findViewById((R.id.hourly_rate));
+
+        setCancelable(false); //화면 터치 시 꺼짐을 막음
+
         return v;
     }
 
 //    "tag"를 통해 부모 fragment로 돌아갈 예정
     public void onClick(View v) {
-        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("HOME_TAG");
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("WAGE_TAG");
         if (v.getId()== R.id.hourlyRateBtnClose){
             if (fragment!=null){
                 DialogFragment dialogFragment = (DialogFragment) fragment;
@@ -43,8 +59,8 @@ public class HourlyRateDialogFragment extends DialogFragment implements View.OnC
         }
         else if (v.getId()==R.id.hourlyRateBtnInput){
             if (fragment!=null){
-
-                //데이터 전달 코드 필요
+                long input = Long.parseLong(editText.getText().toString());
+                fragmentInterfacer.onWageButtonClick(input);
 
                 DialogFragment dialogFragment = (DialogFragment) fragment;
                 dialogFragment.dismiss();

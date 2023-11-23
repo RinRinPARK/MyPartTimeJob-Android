@@ -23,6 +23,10 @@ public class Work {
     @ServerTimestamp
     private Timestamp timestamp;
 
+    public Work(){
+        //no-argument constructor 필요
+    }
+
     public Work( long userId, String participationCode, Date date, double workTime, String branchName, long wage) {
         this.userId = userId;
         this.participationCode = participationCode;
