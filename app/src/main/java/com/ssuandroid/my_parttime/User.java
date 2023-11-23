@@ -14,8 +14,9 @@ public class User {
     @ServerTimestamp
     private Timestamp timestamp;
 
-    public User(long id) {
+    public User(long id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public long getId() {
