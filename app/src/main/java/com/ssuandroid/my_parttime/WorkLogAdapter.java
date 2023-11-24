@@ -25,13 +25,13 @@ public class WorkLogAdapter extends RecyclerView.Adapter<WorkLogAdapter.WorkLogV
 
     @NonNull
     @Override
-    public WorkLogAdapter.WorkLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public WorkLogViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.worklogitem, parent,false);
         return new WorkLogViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WorkLogAdapter.WorkLogViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WorkLogViewHolder holder, int position) {
         Date date = workLogList.get(position).getDate();
         String formattedDate = sdf.format(date);
 
@@ -50,7 +50,6 @@ public class WorkLogAdapter extends RecyclerView.Adapter<WorkLogAdapter.WorkLogV
         private TextView earnedMoney;
         private TextView workedTime;
 
-        /////DB에서 데이터 가져와서 holder에 저장
 
         public WorkLogViewHolder(@NonNull View itemView){
             super(itemView);

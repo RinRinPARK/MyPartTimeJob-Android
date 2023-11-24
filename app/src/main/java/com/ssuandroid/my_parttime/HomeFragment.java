@@ -208,4 +208,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
         super.onResume();
         updateUIVisibility();
     }
+
 }
