@@ -6,7 +6,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 import java.util.Date;
 
 // 대타 관련 클래스
-public class Daeta {
+public class Daeta  {
     
     // 참여코드, 지점 코드
     private String participationCode;
@@ -28,6 +28,10 @@ public class Daeta {
 
     @ServerTimestamp
     private Timestamp timestamp;
+
+    public Daeta(){
+        //no-argument constructor 필요
+    }
 
     public Daeta(String participationCode, long wage , Date date, String time, String description, long writerId, long applicantId, boolean externalTF) {
         this.participationCode = participationCode;
