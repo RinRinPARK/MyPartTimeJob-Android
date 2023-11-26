@@ -7,7 +7,8 @@ import java.util.Date;
 
 // 대타 관련 클래스
 public class Daeta  {
-    //자동 생성 id
+    //Daeta 객체를 만들어 db에 넣을 때 id 형식: "participationCode+" "+Date타입 date+" "+time
+    //예시: PARME456 Mon Nov 20 17:00:00 GMT+09:00 2023 13:00 - 15:30
     // 참여코드, 지점 코드
     private String participationCode;
     //branchName: db에 여러번 접근하는 것을 막기 위해 처음에 대타 리스트를 띄울 때 participationCode와 일치하는 branchName을 찾아 setBranchName하도록 함.
