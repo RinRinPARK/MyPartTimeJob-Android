@@ -67,7 +67,6 @@ public class DaetaDescriptionDialogFragment extends DialogFragment implements Vi
         branchName.setText(daeta.getBranchName());
 
         time.setText(daeta.getTime());
-        dayWage.setText(Long.toString(daeta.getWage()));
         wage.setText(Long.toString(daeta.getWage()));
         description.setText(daeta.getDescription());
 
@@ -75,6 +74,20 @@ public class DaetaDescriptionDialogFragment extends DialogFragment implements Vi
         SimpleDateFormat newFormat = new SimpleDateFormat("yyyy년 M월 d일");
         String formattedDate = newFormat.format(daeta.getDate());
         date.setText(formattedDate);
+
+        //workTime을 구함 (실제 일하는 시간, 예를 들어 3시간, 2.5시간 등.. ->이걸로 "일당"을 계산
+            String timeRange = daeta.getTime();
+            String[] parts = timeRange.split(" - ");
+            // 첫 번째 시간대 13:30
+            String startHour = parts[0].split(":")[0]; //13
+            String startMin = parts[0].split(":")[1]; //30
+            // 두 번째 시간대에서 15:00
+            String endHour = parts[1].split(":")[0]; //15
+            String endMin = parts[1].split(":")[1]; //00
+            double workHour = Double.parseDouble(endHour)-Double.parseDouble(startHour); //2
+            double workMin = Double.parseDouble(endMin)-Double.parseDouble(startMin); //-30 또는 0 또는 30
+            double workTotalTime = (workHour + workMin/60)*daeta.getWage();
+        dayWage.setText(Integer.toString((int)workTotalTime));
 
         setCancelable(false); //화면 터치 시 꺼짐을 막음
     }
