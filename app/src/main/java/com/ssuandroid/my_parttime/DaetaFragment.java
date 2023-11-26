@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -121,12 +122,25 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
         @Override
         public void onDescriptionApplication(Daeta daeta, int position) {
             daeta.setCovered();
-            db.collection("Daeta").document(Integer.toString(position)).set(daeta); //위에선 map을 올렸는데, 직접 만든 객체 형식으로도 넣을 수 있음을 보임.
+            Log.d("ymj", daeta.getCovered()+" true인지 학인");
+            Log.d("ymj", daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime());
+            db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
+            //covered field를 바꾼 객체를 넣어주어 목록에서 사라지게 한다.
+
+            //신청이 완료되면 토스트를 띄운다
+            Toast toast = Toast.makeText(getContext(), "외부 대타 신청이 완료되었어요!", Toast.LENGTH_SHORT);
+            toast.show();
+
         }
 
         @Override
         public void onApplication(Daeta daeta, int position) {
-//                    db.collection("Daeta").document(daetaArrayList.get(position)).set(daeta)); //위에선 map을 올렸는데, 직접 만든 객체 형식으로도 넣을 수 있음을 보임.
+            daeta.setCovered(); //covered를 true로 바꾼다
+            db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
+
+            //신청이 완료되면 토스트를 띄운다
+            Toast toast = Toast.makeText(getContext(), "외부 대타 신청이 완료되었어요!", Toast.LENGTH_SHORT);
+            toast.show();
     };
 }
 
