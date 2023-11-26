@@ -94,7 +94,6 @@ public class MainActivity extends AppCompatActivity{
 
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, albaHomeFragment)
-                .addToBackStack( null)
                 .commit();
 
     }
