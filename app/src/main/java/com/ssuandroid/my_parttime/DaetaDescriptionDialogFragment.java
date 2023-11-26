@@ -65,7 +65,6 @@ public class DaetaDescriptionDialogFragment extends DialogFragment implements Vi
         inputButton.setOnClickListener(this);
 
         branchName.setText(daeta.getBranchName());
-        Log.d("ymj", daeta.getDate()+"");
 
         time.setText(daeta.getTime());
         dayWage.setText(Long.toString(daeta.getWage()));

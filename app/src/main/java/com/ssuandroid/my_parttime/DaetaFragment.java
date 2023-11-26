@@ -76,7 +76,6 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                                             daetaArrayList.add(document.toObject(Daeta.class));
                                                         }
-                                                        Log.d("ymj", "대타 db에서 잘 받아옴");
 
                                                         ///어댑터 셋팅 : 2개의 ArrayList를 전해준다
                                                         adapter_daetaList = new DaetaListAdapter(branchArrayList, daetaArrayList, buttonClickListener);
@@ -97,7 +96,6 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
         @Override
         public void onButtonClick(int position, String buttonPos) {
             if (buttonPos.equals("descriptionBtn")) {
-                Log.d("ymj", "버튼 눌림 in fragment");
                 callDescriptionDialog(position);
             } else if (buttonPos.equals("applicationBtn"))
                 callApplicationDialog(position);
@@ -106,7 +104,6 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
 
     public void callDescriptionDialog(int position){
         Daeta daeta = daetaArrayList.get(position); //대타 객체를 통째로 dialogfragment에게 보낸다
-        Log.d("ymj", "here");
         DaetaDescriptionDialogFragment daetaDescriptionDialogFragment = new DaetaDescriptionDialogFragment(daeta, position);
         daetaDescriptionDialogFragment.setDaetaInterfacer1(this); //인터페이스로 나를 건넨다....
         daetaDescriptionDialogFragment.show(getActivity().getSupportFragmentManager(), "DAETA_DESCRIPTION_TAG");
@@ -122,8 +119,6 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
         @Override
         public void onDescriptionApplication(Daeta daeta, int position) {
             daeta.setCovered();
-            Log.d("ymj", daeta.getCovered()+" true인지 학인");
-            Log.d("ymj", daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime());
             db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
             //covered field를 바꾼 객체를 넣어주어 목록에서 사라지게 한다.
 
