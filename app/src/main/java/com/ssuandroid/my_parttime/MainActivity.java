@@ -8,18 +8,26 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.ssuandroid.my_parttime.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     BottomNavigationView bottomNavigationView;
     HomeFragment homeFragment;
     CalendarFragment calendarFragment;
     DaetaFragment daetaFragment;
     ActivityMainBinding binding;
+    int albaPos;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     //초기 셋팅
     private void init(){
+        db = FirebaseFirestore.getInstance();
 
         //fragment 객체 생성하여 할당
         homeFragment= new HomeFragment();
@@ -73,5 +82,21 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction().replace(R.id.main_container, homeFragment).commitAllowingStateLoss();
     }
+
+
+    //recyclerview 터치시 fragment 변경
+    public void fragmentChange(Alba selectedAlba){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("selectedAlba",selectedAlba); //선택된 Alba item을 통째로 건넨다
+
+        AlbaHomeFragment albaHomeFragment = new AlbaHomeFragment();
+        albaHomeFragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, albaHomeFragment)
+                .commit();
+
+    }
+
 }
 

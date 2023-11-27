@@ -10,6 +10,8 @@ public class Daeta {
     
     // 참여코드, 지점 코드
     private String participationCode;
+    //대타 등록한 사람의 해당 알바에서의 시급 : 이 시급으로 대타가 벌게 될 돈을 계산: wage * 일하는 시간
+    private long wage;
     // 대타 구하는 날짜
     private Date date;
     // 대타 구하는 시간 (ex: "13:00 - 15:00" 이런 양식으로 넣어야 함.)
@@ -17,6 +19,7 @@ public class Daeta {
     // 대타 구하기 설명
     private String description;
     // 대타 구인하는 작성자 id
+    // 대타 구인하는 작성자 id로부터 wage를 얻어와
     private long writerId;
     // 대타 신청한 대타 id, 구인 중일 때는 null -> 구인 완료 시 대타의 id
     private long applicantId;
@@ -26,8 +29,9 @@ public class Daeta {
     @ServerTimestamp
     private Timestamp timestamp;
 
-    public Daeta(String participationCode, Date date, String time, String description, long writerId, long applicantId, boolean externalTF) {
+    public Daeta(String participationCode, long wage , Date date, String time, String description, long writerId, long applicantId, boolean externalTF) {
         this.participationCode = participationCode;
+        this.wage= wage;
         this.date = date;
         this.time = time;
         this.description = description;
@@ -39,6 +43,7 @@ public class Daeta {
     public String getParticipationCode() {
         return participationCode;
     }
+    public long getWage() { return wage;}
 
     public Date getDate() {
         return date;

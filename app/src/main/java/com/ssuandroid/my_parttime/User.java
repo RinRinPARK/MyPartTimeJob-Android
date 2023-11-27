@@ -6,7 +6,7 @@ import com.google.firebase.firestore.ServerTimestamp;
 public class User {
 
     // 유저의 id
-    private long id;
+    private String id;
 
     // 유저의 이름
     private String name;
@@ -14,11 +14,12 @@ public class User {
     @ServerTimestamp
     private Timestamp timestamp;
 
-    public User(long id) {
+    public User(String id, String name) {
         this.id = id;
+        this.name = name;
     }
 
-    public long getId() {
+    public String getId() {
         return this.id;
     }
 

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10sp"
+    android:layout_marginBottom="5sp"
+    android:background="@drawable/recyclerviews_custom"
+    android:orientation="vertical"
+    android:padding="7dp"
+    android:elevation="7sp"
+    >
+
+
+    <TextView
+        android:id="@+id/workedDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/bold"
+        android:text="2023.10.17"
+        android:textColor="@color/black"
+        android:textSize="14sp"></TextView>
+
+    <TextView
+        android:id="@+id/earnedMoney"
+        android:fontFamily="@font/bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:textColor="@color/gray"
+        android:textSize="35sp"
+        android:text="19,240원"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/workedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15sp"
+        android:layout_marginBottom="3sp"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:text="2시간"
+        android:textStyle="bold">
+
+    </TextView>
+
+
+
+
+</RelativeLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10sp"
+    android:layout_marginBottom="5sp"
+    android:background="@drawable/recyclerviews_custom"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:clickable="true"
+    android:elevation="10sp"
+    >
+
+
+    <TextView
+        android:id="@+id/albaName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/bold"
+        android:text="파리바게뜨 숭실대점"
+        android:textColor="@color/black"
+        android:textSize="30sp"></TextView>
+
+
+    <TextView
+        android:id="@+id/albaCodeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/albaParticipationCode"
+        android:layout_below="@+id/albaName"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="참여 코드: ">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/albaParticipationCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/albaName"
+        android:layout_marginRight="15dp"
+        android:layout_alignBaseline="@+id/albaCodeTitle"
+        android:textColor="@color/black"
+        android:text="testing..">
+
+    </TextView>
+
+
+
+</RelativeLayout>
