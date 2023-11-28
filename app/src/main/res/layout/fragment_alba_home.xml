@@ -5,21 +5,41 @@
     android:layout_height="match_parent"
     tools:context=".AlbaHomeFragment">
 
-    <TextView
-        android:id="@+id/AlbaHome_title"
-        android:textColor="@color/black"
+
+    <LinearLayout
+        android:id="@+id/back_and_title_home"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginLeft="18dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="18dp"
         android:padding="10dp"
-        android:background="@drawable/textview_border"
-        android:text=" "
-        android:textSize="30dp"
-        android:fontFamily="@font/bold"
-        android:layout_marginBottom="70dp">
+        android:orientation="horizontal">
 
-    </TextView>
+        <ImageButton
+            android:id="@+id/back_to_home_btn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_back"
+            android:scaleType="centerCrop"
+            android:padding="10dp"
+            android:background="@drawable/textview_border"
+            android:layout_marginRight="5sp">
+        </ImageButton>
+        <TextView
+            android:id="@+id/AlbaHome_title"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="@drawable/textview_border"
+            android:text=" "
+            android:textSize="30dp"
+            android:fontFamily="@font/bold"
+            android:layout_marginBottom="70dp">
+
+        </TextView>
+
+    </LinearLayout>
 
 
     <TextView
@@ -30,7 +50,7 @@
         android:text="&lt;근무 현황&gt;"
         android:textSize="25dp"
         android:textColor="@color/black"
-        android:layout_below="@+id/AlbaHome_title"
+        android:layout_below="@+id/back_and_title_home"
         android:layout_marginLeft="15dp"
         android:layout_marginBottom="5dp"
         ></TextView>
