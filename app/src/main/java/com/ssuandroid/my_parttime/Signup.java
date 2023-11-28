@@ -50,11 +50,7 @@ public class Signup extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
 
-        if(fAuth.getCurrentUser() !=null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
 
-        }
 
         mSignupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
