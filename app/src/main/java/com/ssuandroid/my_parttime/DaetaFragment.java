@@ -1,5 +1,6 @@
 package com.ssuandroid.my_parttime;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,6 +30,7 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
     FirebaseFirestore db;
     ArrayList<Daeta> daetaArrayList = new ArrayList<>();
     ArrayList<Branch> branchArrayList = new ArrayList<>(); //daeta branchname 띄우기 위해서 필요함
+    FirebaseUser user;
 
     @Nullable
     @Override
@@ -45,6 +49,10 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
         recyclerViewDaetaList = (RecyclerView) view.findViewById(R.id.daetaListRecyclerView);
         recyclerViewDaetaList.setHasFixedSize(true);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+        }
 
 
     }
@@ -119,6 +127,7 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
         @Override
         public void onDescriptionApplication(Daeta daeta, int position) {
             daeta.setCovered();
+            daeta.setApplicantId(user.getUid());
             db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
             //covered field를 바꾼 객체를 넣어주어 목록에서 사라지게 한다.
 
@@ -131,6 +140,7 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
         @Override
         public void onApplication(Daeta daeta, int position) {
             daeta.setCovered(); //covered를 true로 바꾼다
+            daeta.setApplicantId(user.getUid());
             db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
 
             //신청이 완료되면 토스트를 띄운다
