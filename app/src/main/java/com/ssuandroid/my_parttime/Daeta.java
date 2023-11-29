@@ -83,9 +83,6 @@ public class Daeta  {
         return externalTF;
     }
 
-    public String generateId() {
-        return getParticipationCode() + " " + getDate() + " " + getTime();
-    }
 
     public boolean getCovered() {return covered;}
 

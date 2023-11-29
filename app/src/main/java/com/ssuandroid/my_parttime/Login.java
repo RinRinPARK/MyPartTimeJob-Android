@@ -36,11 +36,6 @@ public class Login extends AppCompatActivity {
         mLoginBtn=findViewById(R.id.btnLogin);
         mCreateBtn=findViewById(R.id.createText);
 
-        if(fAuth.getCurrentUser() !=null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-
-        }
 
 
         mLoginBtn.setOnClickListener(new View.OnClickListener() {

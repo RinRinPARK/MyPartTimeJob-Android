@@ -19,8 +19,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,11 +34,14 @@ public class DaetaDialogFragment extends DialogFragment implements View.OnClickL
     NumberPicker numberPicker, numberPicker1;
     String sTime;
     TextView inputDate;
+    long wage;
+    String participationCode;
     EditText reasonEditText;
     String[] dTime= {"01:00","01:30", "02:00","02:30", "03:00", "03:30", "04:00", "04:30", "05:00","05:30","06:00","06:30", "07:00","07:30", "08:00","08:30", "09:00","09:30", "10:00","10:30", "11:00","11:30", "12:00","12:30", "13:00","13:30", "14:00","14:30", "15:00","15:30", "16:00", "16:30", "17:00","17:30", "18:00","18:30", "19:00","19:30", "20:00","20:30", "21:00", "21:30","22:00", "22:30", "23:00","23:30", "24:00"};
     final SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy.MM.dd");
     String result = dataFormat.format(curDate);
     FirebaseFirestore db;
+    FirebaseUser user;
 
     public DaetaDialogFragment() {}//생성자
     public static DaetaDialogFragment getInstance() {
@@ -43,18 +49,15 @@ public class DaetaDialogFragment extends DialogFragment implements View.OnClickL
         return d;
     }
 
-    public interface DaetaFragmentInterfacer {
-        void newDaetaBtn(String date, String dTime, String reason);
-    }
 
-    private DaetaDialogFragment.DaetaFragmentInterfacer DaetaFragmentInterfacer;
-
-    public void setFragmentInterfacer(DaetaDialogFragment.DaetaFragmentInterfacer DaetaFragmentInterfacer){
-        this.DaetaFragmentInterfacer = DaetaFragmentInterfacer;
-    }
 
     public View onCreateView(Context context, LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+        }
+
         View v= inflater.inflate(R.layout.dialogfragment_daetareg, container);
         Button closeButton = (Button) v.findViewById(R.id.deatacloseButton);
         closeButton.setOnClickListener(this);
@@ -111,8 +114,21 @@ public class DaetaDialogFragment extends DialogFragment implements View.OnClickL
                 String daetaTime =sTime;
                 String reason = reasonEditText.getText().toString();
 
+                String userId =user.getUid();
+                Date date =new Date();
+                SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy.MM.dd");
+                try{
+                    date=dateFormat.parse(daetaDate);
+                }catch (ParseException d){d.printStackTrace();}
+
+                Daeta daeta= new Daeta(participationCode, wage, date, daetaTime,reason, null, userId, true );
+                participationCode=daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime();
+                wage=daeta.getWage();
+
+                db.collection("Daeta").document().set(daeta);
+
                 Log.d("saxa", inputDate+"받음"+daetaTime);
-                DaetaFragmentInterfacer.newDaetaBtn(daetaDate, daetaTime, reason);
+
 
                 DialogFragment dialogFragment = (DialogFragment) fragment;
                 dialogFragment.dismiss();
@@ -162,6 +178,8 @@ public class DaetaDialogFragment extends DialogFragment implements View.OnClickL
         String selectedDateStr = dataFormat.format(curDate);
         inputDate.setText(selectedDateStr);
     }
+
+
 
 
 }
