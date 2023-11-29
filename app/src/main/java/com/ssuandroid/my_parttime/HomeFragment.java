@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     String newAlbaCode;
     long newAlbaWage;
     String branchName;
+    FirebaseUser user;
 
 
     @Override
@@ -61,6 +64,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
         super.onViewCreated(view, savedInstanceState);
 
         initializeCloudFirestore(); //db에 firestore instance 얻어옴
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+            Log.d("ymj", uid+" id 출력");
+        }
         getAlbaObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
 
         //recyclerView 사용을 위한 초기 작업: RecyclerView는 LayoutManager와 Adapter(ViewHolder을 포함하는)을 필요로 한다.
@@ -81,6 +92,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
 
     private void getAlbaObject(){
         db.collection("Alba")
+                .whereEqualTo("userId", user.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -119,7 +131,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     public void onButtonClick(String input) {
         newAlbaCode= input;
 
-        db.collection("Branch").whereEqualTo("participationCode", newAlbaCode).get()
+        db.collection("Branch")
+                .whereEqualTo("participationCode", newAlbaCode)
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -162,7 +176,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     public void newAlbaObject(){
 
         //임시 userId
-        int userId= 1;
+        String userId= user.getUid();
 
         //얻은 participationCode를 통해 branchName을 알아낸다
         db.collection("Branch")
@@ -208,4 +222,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
         super.onResume();
         updateUIVisibility();
     }
+
 }

@@ -1,14 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".DaetaFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Daeta Fragment" />
+        android:id="@+id/Daeta_title"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:padding="10dp"
+        android:background="@drawable/textview_border"
+        android:text="대타 공고"
+        android:textSize="30dp"
+        android:fontFamily="@font/bold"
+        android:layout_marginBottom="15dp">
+    </TextView>
 
-</FrameLayout>
+    <!--날짜 필터링 리사이클러뷰: LinearLayoutManager 사용?-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dateFilterRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:layout_marginTop="4sp"
+        android:layout_marginBottom="4sp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#C9000000"
+        android:backgroundTint="@color/middlegray"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        ></View>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/daetaListRecyclerView"
+        android:layout_below="@id/albaHome_Line"
+        android:layout_width="match_parent"
+        android:layout_height="520sp"
+        android:layout_marginTop="4sp"
+        android:layout_marginBottom="4sp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+</LinearLayout>

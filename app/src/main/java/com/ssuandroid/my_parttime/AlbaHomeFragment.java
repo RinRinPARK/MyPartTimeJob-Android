@@ -15,16 +15,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -47,6 +51,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
     FirebaseFirestore db;
     Button workAddBtn;
     Button moveToDaetaCalendar;
+    ImageButton backToHome;
     TextView albaTitle;
     TextView albaWage;
     TextView albaWorkedTime;
@@ -58,6 +63,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
     //새로운 Work 객체 만들기 위해 사용
     String workedDate;
     double workedTime;
+    FirebaseUser user;
 
     @Nullable
     @Override
@@ -71,6 +77,10 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
         setHasOptionsMenu(true);
 
         initializeCloudFirestore(); //db에 firestore instance 얻어옴
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+        }
 
         Bundle bundle = getArguments();
         selectedAlba = (Alba) bundle.getSerializable("selectedAlba");
@@ -85,8 +95,10 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
         //버튼에 리스너 달아주기
         workAddBtn = (Button) view.findViewById(R.id.inputWorkedTimeBtn);
         moveToDaetaCalendar = (Button) view.findViewById(R.id.moveToDaetaCalendarBtn);
+        backToHome = (ImageButton) view.findViewById(R.id.back_to_home_btn);
         workAddBtn.setOnClickListener(this);
         moveToDaetaCalendar.setOnClickListener(this);
+        backToHome.setOnClickListener(this);
 
         //값을 바꿔줘야 하는 텍스트뷰 받기
         albaTitle = (TextView) view.findViewById(R.id.AlbaHome_title);
@@ -102,6 +114,8 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
         // branchName을 이용하여 Work 컬렉션에서 총 일한 시간과 총 예상 월급을 계산
         db.collection("Work")
                 .whereEqualTo("branchName", selectedAlba.getBranchName())
+                .whereEqualTo("userId", user.getUid())
+                .orderBy("date", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -130,6 +144,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
     private void getWorkObject(){
         db.collection("Work")
                 .whereEqualTo("branchName", selectedAlbaName)
+                .whereEqualTo("userId", user.getUid() )
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -166,6 +181,13 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
                     .addToBackStack(null)
                     .commit();
         }
+        else if (v.getId()==R.id.back_to_home_btn){
+            //homefragment로 돌아가기
+            HomeFragment homeFragment = new HomeFragment();
+            getParentFragmentManager().beginTransaction()
+                            .replace(R.id.main_container, homeFragment)
+                                    .commit();
+        }
     }
 
     public void newWorkBtn(String date, String workedTime) {
@@ -176,7 +198,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
 
     public void newWorkObject(){
         //임시 userId
-        long userId=1;
+        String userId= user.getUid();
 
 
         //workedDate를 Date 객체로 만들어주어야함.
