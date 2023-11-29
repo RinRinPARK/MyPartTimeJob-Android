@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="312dp"
+    android:layout_height="200dp"
+    android:background="@color/lightgray"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:minWidth="300dp">
+
+    <ImageView
+        android:layout_width="35sp"
+        android:layout_height="35sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="15sp"
+        android:src="@drawable/ic_confirm">
+    </ImageView>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20sp">
+
+        <TextView
+            android:id="@+id/daetaBranchName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="파리바게뜨 숭실대점"
+            android:textColor="@color/black"
+            android:textSize="18sp"></TextView>
+
+        <TextView
+            android:layout_marginTop="5sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="에서의 대타를 취소하시겠어요?"></TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="15sp"
+        android:paddingBottom="5dp">
+
+        <Button
+            android:id="@+id/application_closeBtn"
+            android:background="@drawable/daetaapplication_button_custom_cancel"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15sp"
+            android:text="닫기"></Button>
+
+        <Button
+            android:id="@+id/application_cancellationBtn"
+            android:background="@drawable/daetaapplication_button_custom_confirm"
+            android:layout_width="120sp"
+            android:layout_height="wrap_content"
+            android:text="신청 취소"></Button>
+
+    </LinearLayout>
+</LinearLayout>

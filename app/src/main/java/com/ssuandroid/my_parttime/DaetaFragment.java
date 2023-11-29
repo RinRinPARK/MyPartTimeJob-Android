@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,13 +25,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFragment.DaetaInterfacer1, DaetaApplicationDialogFragment.DaetaInterfacer2 {
+public class DaetaFragment extends Fragment implements View.OnClickListener, DaetaDescriptionDialogFragment.DaetaInterfacer1, DaetaApplicationDialogFragment.DaetaInterfacer2 {
     public RecyclerView recyclerViewDaetaList;
     public RecyclerView.Adapter adapter_daetaList;
     FirebaseFirestore db;
     ArrayList<Daeta> daetaArrayList = new ArrayList<>();
     ArrayList<Branch> branchArrayList = new ArrayList<>(); //daeta branchname 띄우기 위해서 필요함
     FirebaseUser user;
+    ImageButton daetaListBtn;
 
     @Nullable
     @Override
@@ -48,6 +50,8 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
 
         recyclerViewDaetaList = (RecyclerView) view.findViewById(R.id.daetaListRecyclerView);
         recyclerViewDaetaList.setHasFixedSize(true);
+        daetaListBtn = (ImageButton) view.findViewById(R.id.daetaList_btn);
+        daetaListBtn.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -100,6 +104,17 @@ public class DaetaFragment extends Fragment implements DaetaDescriptionDialogFra
                         });
 
     }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId()==R.id.daetaList_btn){
+            MyDaetaApplicationListFragment myDaetaApplicationListFragment = new MyDaetaApplicationListFragment();
+
+            getParentFragmentManager()
+                    .beginTransaction().replace(R.id.main_container, myDaetaApplicationListFragment).commit();
+        }
+    }
+
     DaetaListAdapter.OnButtonClickListener buttonClickListener = new DaetaListAdapter.OnButtonClickListener() {
         @Override
         public void onButtonClick(int position, String buttonPos) {
