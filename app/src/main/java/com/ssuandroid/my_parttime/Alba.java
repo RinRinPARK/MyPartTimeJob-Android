@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class Alba implements Serializable {
     //Serializable 추가: Alba 객체를 bundle로 건네기 위함
     // 유저 id
-    private long userId;
+    private String userId;
 
     // 지점 이름
     private String branchName;
@@ -21,7 +21,7 @@ public class Alba implements Serializable {
     @ServerTimestamp
     private Timestamp timestamp;
 
-    public Alba(long userId, String branchName, String participationCode, long wage) {
+    public Alba(String userId, String branchName, String participationCode, long wage) {
         this.userId =userId;
         this.branchName = branchName;
         this.participationCode = participationCode;
@@ -32,7 +32,7 @@ public class Alba implements Serializable {
         //no-argument constructor missing 에러 해결
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 

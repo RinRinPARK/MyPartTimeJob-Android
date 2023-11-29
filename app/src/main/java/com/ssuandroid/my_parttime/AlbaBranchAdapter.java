@@ -23,14 +23,14 @@ public class AlbaBranchAdapter extends RecyclerView.Adapter<AlbaBranchAdapter.Vi
 
     @NonNull
     @Override
-    public AlbaBranchAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.albaitem, parent, false); //어떤 것을 inflate해야 옳은지.. 다시 확인할 부분
         return new ViewHolder(v);
     }
 
     //recyclerView가 특정 행에 대한 ViewHolder을 요구
     @Override
-    public void onBindViewHolder(@NonNull AlbaBranchAdapter.ViewHolder holder, int position) { //position: 몇번째 행인지?
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) { //position: 몇번째 행인지?
         //매개변수로 위에서 만든 holder을 받는다. 이를 사용하여 setText 해주어야 한다.
         holder.albaName.setText(albaList.get(position).getBranchName().toString()); //db 사용시 알맞게 getter 사용할 것. 우선은 branchName만 변경
         holder.albaParticipationCode.setText(albaList.get(position).getParticipationCode().toString());

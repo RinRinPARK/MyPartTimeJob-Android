@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingTop="10sp"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp">
+
+    <TextView
+        android:id="@+id/branchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="3sp"
+        android:text="파리바게뜨 숭실대점"
+        android:textSize="25sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/bold">
+    </TextView>
+
+
+    <LinearLayout
+        android:id="@+id/dayWageLinear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
+        <TextView
+            android:id="@+id/dayWage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50000"
+            android:textSize="25sp"
+            android:textColor="#5A72ED"
+            android:fontFamily="@font/bold">
+        </TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignRight="@+id/dayWage"
+            android:text="원"
+            android:textSize="25sp"
+            android:textColor="#5A72ED"
+            android:fontFamily="@font/bold"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/branchName"
+        android:orientation="vertical"
+        android:layout_marginTop="15sp"
+        android:layout_marginLeft="3sp"
+        >
+
+        <TextView
+            android:id="@+id/daetaWorkTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="15:00~20:00"
+            android:textSize="18sp"
+            android:layout_marginBottom="5sp">
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시급: "
+            android:textSize="18sp"
+            android:layout_marginBottom="5sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/daeta_wage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10000"
+            android:textSize="18sp"
+            android:layout_marginBottom="5sp">
+        </TextView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textSize="18sp"
+                android:layout_marginBottom="5sp">
+            </TextView>
+
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/daeta_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/dayWageLinear"
+        android:layout_marginTop="15sp"
+        android:layout_marginBottom="6sp"
+        android:clipToPadding="true"
+        >
+
+        <Button
+            android:id="@+id/daeta_description_btn"
+            android:layout_width="80sp"
+            android:layout_height="45sp"
+            android:layout_margin="5sp"
+            android:background="@drawable/daeta_recycler_button_custom"
+            android:text="상세 내용"
+            android:textSize="18sp"
+            android:elevation="8dp"
+            android:stateListAnimator="@null"
+            android:clickable="true"
+            ></Button>
+
+        <Button
+            android:id="@+id/daeta_application_btn"
+            android:layout_width="80sp"
+            android:layout_height="45sp"
+            android:layout_margin="5sp"
+            android:background="@drawable/daeta_recycler_button_custom"
+            android:text="신청"
+            android:textSize="18sp"
+            android:elevation="8dp"
+            android:stateListAnimator="@null"
+            android:clickable="true"
+            ></Button>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/daeta_buttons"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#C9000000"
+        android:backgroundTint="@color/middlegray"></View>
+
+</RelativeLayout>
