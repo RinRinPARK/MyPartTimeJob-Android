@@ -157,8 +157,14 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
             workedTimeDialogFragment.setFragmentInterfacer(this);
             workedTimeDialogFragment.show(getActivity().getSupportFragmentManager(), "WORKED_TIME_TAG");
         }
-        else if (v.getId()==R.id.moveToDaetaCalendarBtn){
+        else if (v.getId()==R.id.moveToDaetaCalendarBtn) {
             //대타 캘린더로 이동하기
+            getActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.alba_home_fragment_view, new DaetaCalendarFragment())
+                    .addToBackStack(null)
+                    .commit();
         }
     }
 

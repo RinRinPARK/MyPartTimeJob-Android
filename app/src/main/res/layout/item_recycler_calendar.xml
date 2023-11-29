@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="5dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:gravity="center">
+    android:layout_marginBottom="5dp"
+    >
 
     <TextView
         android:id="@+id/day_recycler_calendar"
         android:gravity="left|top"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:layout_height="60dp"
+        android:textSize="18sp"
         />
+
 
 </LinearLayout>

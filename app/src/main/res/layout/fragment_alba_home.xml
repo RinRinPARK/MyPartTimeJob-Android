@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AlbaHomeFragment">
+    tools:context=".AlbaHomeFragment"
+    android:id="@+id/alba_home_fragment_view">
 
     <TextView
         android:id="@+id/AlbaHome_title"
