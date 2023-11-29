@@ -82,6 +82,11 @@ public class Daeta  {
     public boolean getExternalTF() {
         return externalTF;
     }
+
+    public String generateId() {
+        return getParticipationCode() + " " + getDate() + " " + getTime();
+    }
+
     public boolean getCovered() {return covered;}
 
     public void setBranchName(String branchName) {
