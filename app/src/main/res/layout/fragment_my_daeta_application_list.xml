@@ -41,9 +41,18 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_marginTop="10dp"
+        android:background="#C9000000"
+        android:backgroundTint="@color/middlegray"></View>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myDaetaList"
         android:layout_width="match_parent"
-        android:layout_height="300dp"></androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="575dp"></androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

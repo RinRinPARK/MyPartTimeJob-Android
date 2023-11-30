@@ -87,6 +87,7 @@ public class DaetaDescriptionDialogFragment extends DialogFragment implements Vi
             double workHour = Double.parseDouble(endHour)-Double.parseDouble(startHour); //2
             double workMin = Double.parseDouble(endMin)-Double.parseDouble(startMin); //-30 또는 0 또는 30
             double workTotalTime = (workHour + workMin/60)*daeta.getWage();
+            if (workTotalTime<0) workTotalTime=-workTotalTime;
         dayWage.setText(Integer.toString((int)workTotalTime));
 
         setCancelable(false); //화면 터치 시 꺼짐을 막음

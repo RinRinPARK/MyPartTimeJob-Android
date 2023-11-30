@@ -64,6 +64,7 @@ public class DaetaListAdapter extends RecyclerView.Adapter<DaetaListAdapter.Daet
         double workMin = Double.parseDouble(endMin)-Double.parseDouble(startMin); //-30 또는 0 또는 30
 
         double workTotalTime = (workHour + workMin/60)*daetaList.get(position).getWage();
+        if (workTotalTime<0) workTotalTime=-workTotalTime; //음수 가능성 존재
         String dayWage= Integer.toString((int) workTotalTime);
         String workTime= daetaList.get(position).getTime();
         String hourlyRate= Long.toString(daetaList.get(position).getWage());

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -55,14 +56,19 @@ public class MyDaetaListAdapter extends RecyclerView.Adapter<MyDaetaListAdapter.
         double workMin = Double.parseDouble(endMin)-Double.parseDouble(startMin); //-30 또는 0 또는 30
 
         double workTotalTime = (workHour + workMin/60)*daetaList.get(position).getWage();
+        if (workTotalTime<0) workTotalTime=-workTotalTime;
         Date date = daetaList.get(position).getDate();
         String dayWage= Integer.toString((int) workTotalTime);
         String workTime= daetaList.get(position).getTime();
         String hourlyRate= Long.toString(daetaList.get(position).getWage());
         String description = daetaList.get(position).getDescription();
 
+        //date 알맞은 형식으로 변환
+        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy년 M월 d일");
+        String formattedDate = newFormat.format(date);
+
         holder.branchName.setText(daetaList.get(position).getBranchName());
-        holder.daetaDate.setText(date.toString());
+        holder.daetaDate.setText(formattedDate);
         holder.dayWage.setText(dayWage);
         holder.daetaWorkTime.setText(workTime);
         holder.hourlyrate.setText(hourlyRate);

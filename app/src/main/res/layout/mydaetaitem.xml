@@ -138,17 +138,6 @@
 
     </LinearLayout>
 
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/daeta_buttons"
-        android:layout_marginLeft="2dp"
-        android:layout_marginRight="2dp"
-        android:background="#C9000000"
-        android:backgroundTint="@color/middlegray"></View>
-
     <LinearLayout
         android:id="@+id/daeta_buttons"
         android:layout_width="wrap_content"
@@ -176,5 +165,14 @@
             android:clickable="true"
             ></Button>
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/daeta_buttons"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="#C9000000"
+        android:backgroundTint="@color/middlegray"></View>
 
 </RelativeLayout>
