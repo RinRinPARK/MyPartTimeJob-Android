@@ -1,5 +1,6 @@
 package com.ssuandroid.my_parttime;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,11 +28,18 @@ import java.util.ArrayList;
 
 public class MyDaetaApplicationListFragment extends Fragment implements DaetaCancellationDialogFragment.CancelInterfacer {
     FirebaseFirestore db;
+    Context mContext;
     FirebaseUser user;
     String uid;
     ArrayList<Daeta> daetaArrayList = new ArrayList<>();
     public RecyclerView recyclerViewMyDaetaList;
     public RecyclerView.Adapter adapter_myDaetaList;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     public MyDaetaApplicationListFragment() {
         // Required empty public constructor
@@ -121,7 +129,7 @@ public class MyDaetaApplicationListFragment extends Fragment implements DaetaCan
         daeta.cancelSetCovered();
         db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
 
-        Toast toast = Toast.makeText(getContext(), "외부 대타 신청 취소가 완료되었어요", Toast.LENGTH_SHORT);
-        toast.show();
+        ToastCustom toastCustom = new ToastCustom(mContext);
+        toastCustom.showToast("외부 대타 취소가 완료되었어요!");
     }
 }

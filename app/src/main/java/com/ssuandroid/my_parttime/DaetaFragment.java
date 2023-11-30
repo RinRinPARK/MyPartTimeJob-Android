@@ -1,11 +1,13 @@
 package com.ssuandroid.my_parttime;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -20,12 +22,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 public class DaetaFragment extends Fragment implements View.OnClickListener, DaetaDescriptionDialogFragment.DaetaInterfacer1, DaetaApplicationDialogFragment.DaetaInterfacer2 {
+    Context mContext;
     public RecyclerView recyclerViewDaetaList;
     public RecyclerView.Adapter adapter_daetaList;
     FirebaseFirestore db;
@@ -33,6 +37,14 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
     ArrayList<Branch> branchArrayList = new ArrayList<>(); //daeta branchname 띄우기 위해서 필요함
     FirebaseUser user;
     ImageButton daetaListBtn;
+    Button dateOrderBtn;
+    Button wageOrderBtn;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Nullable
     @Override
@@ -40,18 +52,24 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.fragment_daeta, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         initializeCloudFirestore();
 
-        getDaetaObject(); //db에서 대타 공고 가져옴
+        getBranchObject();
 
         recyclerViewDaetaList = (RecyclerView) view.findViewById(R.id.daetaListRecyclerView);
         recyclerViewDaetaList.setHasFixedSize(true);
         daetaListBtn = (ImageButton) view.findViewById(R.id.daetaList_btn);
         daetaListBtn.setOnClickListener(this);
+
+        dateOrderBtn = (Button) view.findViewById(R.id.daeta_order_date_btn);
+        wageOrderBtn = (Button) view.findViewById(R.id.daeta_order_wage_btn);
+        dateOrderBtn.setOnClickListener(this);
+        wageOrderBtn.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -66,44 +84,97 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
         db = FirebaseFirestore.getInstance(); //firestore의 인스턴스를 db로 얻음
     }
 
-    private void getDaetaObject(){
+    private void getBranchObject() {
         db.collection("Branch")
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()){
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        branchArrayList.add(document.toObject(Branch.class));
-                                    }
-                                    //branchArrayList를 채우고 난 뒤, 대타 데이터도 받아옴
-                                    db.collection("Daeta")
-                                            .whereEqualTo("externalTF", true)
-                                            .whereEqualTo("covered", false)
-                                            .get()
-                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()){
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            daetaArrayList.add(document.toObject(Daeta.class));
-                                                        }
-
-                                                        ///어댑터 셋팅 : 2개의 ArrayList를 전해준다
-                                                        adapter_daetaList = new DaetaListAdapter(branchArrayList, daetaArrayList, buttonClickListener);
-                                                        recyclerViewDaetaList.setLayoutManager(new LinearLayoutManager((getActivity())));
-                                                        recyclerViewDaetaList.setAdapter(adapter_daetaList);
-                                                    }
-                                                    else {
-                                                        Log.d("ymj", "Error getting documents: ", task.getException());
-                                                    }
-                                                }
-                                            });
-                                }
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                branchArrayList.add(document.toObject(Branch.class));
                             }
-                        });
-
+                        }
+                        getDaetaObject(); //branch 다 채우면 대타 object 가져옴
+                    }
+                });
     }
+
+    private void getDaetaObject() {
+        db.collection("Daeta")
+                .whereEqualTo("externalTF", true)
+                .whereEqualTo("covered", false)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                daetaArrayList.add(document.toObject(Daeta.class));
+                            }
+
+                            ///어댑터 셋팅 : 2개의 ArrayList를 전해준다
+                            adapter_daetaList = new DaetaListAdapter(branchArrayList, daetaArrayList, buttonClickListener);
+                            recyclerViewDaetaList.setLayoutManager(new LinearLayoutManager((getActivity())));
+                            recyclerViewDaetaList.setAdapter(adapter_daetaList);
+                        } else {
+                            Log.d("ymj", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void getDateOrderedObject(){
+        db.collection("Daeta")
+                .whereEqualTo("externalTF", true)
+                .whereEqualTo("covered", false)
+                .orderBy("date", Query.Direction.ASCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            daetaArrayList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                daetaArrayList.add(document.toObject(Daeta.class));
+                            }
+                            ///어댑터 셋팅 : 2개의 ArrayList를 전해준다
+                            adapter_daetaList = new DaetaListAdapter(branchArrayList, daetaArrayList, buttonClickListener);
+                            recyclerViewDaetaList.setLayoutManager(new LinearLayoutManager((getActivity())));
+                            recyclerViewDaetaList.setAdapter(adapter_daetaList);
+                        } else {
+                            Log.d("ymj", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    private void getWageOrderedObject() {
+        db.collection("Daeta")
+                .whereEqualTo("externalTF", true)
+                .whereEqualTo("covered", false)
+                .orderBy("wage", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()){
+                            daetaArrayList.clear();
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                daetaArrayList.add(document.toObject(Daeta.class));
+                            }
+                            ///어댑터 셋팅 : 2개의 ArrayList를 전해준다
+                            adapter_daetaList = new DaetaListAdapter(branchArrayList, daetaArrayList, buttonClickListener);
+                            recyclerViewDaetaList.setLayoutManager(new LinearLayoutManager((getActivity())));
+                            recyclerViewDaetaList.setAdapter(adapter_daetaList);
+                        } else {
+                            Log.d("ymj", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
 
     @Override
     public void onClick(View v) {
@@ -112,6 +183,18 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
 
             getParentFragmentManager()
                     .beginTransaction().replace(R.id.main_container, myDaetaApplicationListFragment).commit();
+        }
+        else if (v.getId()==R.id.daeta_order_date_btn){
+            Log.d("ymj", "버튼 눌림");
+            getDateOrderedObject();
+            dateOrderBtn.setBackground(getResources().getDrawable(R.drawable.clicked_daetafilter_button_custom));
+            wageOrderBtn.setBackground(getResources().getDrawable(R.drawable.daetafilter_button_custom));
+        }
+        else if (v.getId()==R.id.daeta_order_wage_btn){
+            Log.d("ymj", "버튼 눌림");
+            getWageOrderedObject();
+            wageOrderBtn.setBackground(getResources().getDrawable(R.drawable.clicked_daetafilter_button_custom));
+            dateOrderBtn.setBackground(getResources().getDrawable(R.drawable.daetafilter_button_custom));
         }
     }
 
@@ -147,8 +230,8 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
             //covered field를 바꾼 객체를 넣어주어 목록에서 사라지게 한다.
 
             //신청이 완료되면 토스트를 띄운다
-            Toast toast = Toast.makeText(getContext(), "외부 대타 신청이 완료되었어요!", Toast.LENGTH_SHORT);
-            toast.show();
+            ToastCustom toastCustom = new ToastCustom(mContext);
+            toastCustom.showToast("외부 대타 신청이 완료되었어요!");
 
         }
 
@@ -159,8 +242,8 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
             db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
 
             //신청이 완료되면 토스트를 띄운다
-            Toast toast = Toast.makeText(getContext(), "외부 대타 신청이 완료되었어요!", Toast.LENGTH_SHORT);
-            toast.show();
+            ToastCustom toastCustom = new ToastCustom(mContext);
+            toastCustom.showToast("외부 대타 신청이 완료되었어요!");
     };
 }
 

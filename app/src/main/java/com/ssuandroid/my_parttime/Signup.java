@@ -80,7 +80,8 @@ public class Signup extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Signup.this, "회원가입 성공하셨습니다.", Toast.LENGTH_SHORT).show();
+                            ToastCustom toastCustom = new ToastCustom(getApplicationContext());
+                            toastCustom.showToast("회원가입에 성공했어요");
                             userID= fAuth.getCurrentUser().getUid();
                             DocumentReference documentReference = fStore.collection("User").document(userID);
                             User user =new User(userID, name);
@@ -92,7 +93,8 @@ public class Signup extends AppCompatActivity {
                             });
                             startActivity(new Intent(getApplicationContext(), Login.class));
                         } else {
-                            Toast.makeText(Signup.this, "실패하셨습니다!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            ToastCustom toastCustom = new ToastCustom(getApplicationContext());
+                            toastCustom.showToast("회원가입에 실패했어요");
                             progressBar.setVisibility(View.GONE);
                         }
                     }
