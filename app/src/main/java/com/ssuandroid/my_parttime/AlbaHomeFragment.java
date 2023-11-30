@@ -173,7 +173,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
             workedTimeDialogFragment.show(getActivity().getSupportFragmentManager(), "WORKED_TIME_TAG");
         }
         else if (v.getId()==R.id.moveToDaetaCalendarBtn){
-            //대타 캘린더로 이동하기
+            //대타 캘린더로 이동
         }
         else if (v.getId()==R.id.back_to_home_btn){
             //homefragment로 돌아가기

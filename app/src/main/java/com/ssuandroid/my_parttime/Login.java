@@ -56,11 +56,12 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(Login.this, "로그인 성공하셨습니다", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            ToastCustom toastCustom = new ToastCustom(getApplicationContext());
+                            toastCustom.showToast("로그인에 성공했어요!");
 
                         }else{
-                            Toast.makeText(Login.this, "실패하셨습니다!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            ToastCustom toastCustom = new ToastCustom(getApplicationContext());
+                            toastCustom.showToast("로그인에 실패했어요");
                             progressBar.setVisibility(View.GONE);
 
                         }

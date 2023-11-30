@@ -1,5 +1,6 @@
 package com.ssuandroid.my_parttime;
 
+import android.content.Context;
 import android.os.Bundle;
 
 
@@ -39,7 +40,7 @@ import org.checkerframework.checker.units.qual.A;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment implements View.OnClickListener, CodeInputDialogFragment.MyFragmentInterfacer, HourlyRateDialogFragment.FragmentInterfacer{
-
+    Context mContext;
     //branch의 목록을 띄울 recyclerView
     public RecyclerView recyclerView;
     //recyclerView가 필요로 하는 adapter
@@ -53,6 +54,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     String branchName;
     FirebaseUser user;
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -80,6 +86,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
 
         RelativeLayout newAlbaBtn = (RelativeLayout) view.findViewById(R.id.PlusButton);
         newAlbaBtn.setOnClickListener(this);
+
+        ToastCustom toastCustom = new ToastCustom(mContext);
 
         setHasOptionsMenu(true);
     }
@@ -140,14 +148,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                         if (task.isSuccessful()){
                             QuerySnapshot doc = task.getResult();
                                 if(doc.isEmpty()){
-                                    Log.d("ymj", "코드가 존재하지 않음");
                                     //코드가 존재하지 않음 -> 다음 다이얼로그프래그먼트를 띄우지 않고 다이얼로그프래그먼트를 닫는다
                                     CodeInputDialogFragment dialogFragment = (CodeInputDialogFragment) getFragmentManager().findFragmentByTag("CODE_TAG");
                                     if (dialogFragment != null) {
                                         dialogFragment.dismiss();
                                     }
-                                    Toast toast = Toast.makeText(getContext(), "해당 알바 브랜치가 존재하지 않습니다.", Toast.LENGTH_SHORT);
-                                    toast.show();
+                                    ToastCustom toastCustom = new ToastCustom(mContext);
+                                    toastCustom.showToast("해당 알바 브랜치가 존재하지 않아요");
                                 }
                                 else {
                                     Log.d("ymj", "올바른 코드 입력");

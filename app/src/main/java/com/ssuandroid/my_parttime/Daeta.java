@@ -90,7 +90,9 @@ public class Daeta  {
     public void setCovered(){
         this.covered=true;
     }
+    public void cancelSetCovered() {this.covered=false;}
     public void setApplicantId(String applicantId){
         this.applicantId = applicantId;
     }
+    public void cancelSetApplicantId() {this.applicantId = null;}
 }

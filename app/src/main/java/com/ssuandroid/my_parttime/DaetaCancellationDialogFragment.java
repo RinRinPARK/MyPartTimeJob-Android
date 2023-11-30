@@ -13,35 +13,35 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
-public class DaetaApplicationDialogFragment extends DialogFragment implements View.OnClickListener {
+public class DaetaCancellationDialogFragment extends DialogFragment implements View.OnClickListener {
     private Daeta daeta;
     private int position;
-    public DaetaApplicationDialogFragment() {
+    public DaetaCancellationDialogFragment() {
     }
 
-    public DaetaApplicationDialogFragment(Daeta daeta, int position){
+    public DaetaCancellationDialogFragment(Daeta daeta, int position){
         this.daeta= daeta;
         this.position=position;
     }
 
-    public static DaetaApplicationDialogFragment getInstance() {
-        DaetaApplicationDialogFragment e = new DaetaApplicationDialogFragment();
+    public static DaetaCancellationDialogFragment getInstance() {
+        DaetaCancellationDialogFragment e = new DaetaCancellationDialogFragment();
         return e;
     }
 
-    //daetafragment에 데이터 넘겨주기 위한 인터페이스
-    public interface DaetaInterfacer2 {
-        void onApplication(Daeta daeta, int position); //추상 메소드
+    //신청 취소 누르면 데이터 넘기기 위한 인터페이스
+    public interface CancelInterfacer {
+        void onCancellation(Daeta daeta, int position);
+    }
+    private CancelInterfacer cancelInterfacer;
+    public void setCancelInterfacer(CancelInterfacer cancelInterfacer){
+        this.cancelInterfacer= cancelInterfacer;
     }
 
-    private DaetaInterfacer2 daetaInterfacer2;
-    public void setDaetaInterfacer2(DaetaInterfacer2 daetaInterfacer2){
-        this.daetaInterfacer2= daetaInterfacer2;
-    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialogfragment_daetaapplication, container, false);
+        return inflater.inflate(R.layout.dialogfragment_daetacancelation, container, false);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class DaetaApplicationDialogFragment extends DialogFragment implements Vi
         TextView textView = (TextView) v.findViewById(R.id.daetaBranchName);
         Button closeButton = (Button) v.findViewById(R.id.application_closeBtn);
         closeButton.setOnClickListener(this);
-        Button inputButton = (Button) v.findViewById(R.id.application_applicationBtn);
-        inputButton.setOnClickListener(this);
+        Button cancelButton = (Button) v.findViewById(R.id.application_cancellationBtn);
+        cancelButton.setOnClickListener(this);
 
         textView.setText(daeta.getBranchName());
 
@@ -63,18 +63,16 @@ public class DaetaApplicationDialogFragment extends DialogFragment implements Vi
     @Override
     public void onClick(View v) {
         if (v.getId()==R.id.application_closeBtn){
-            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("DAETA_APPLICATION_TAG");
+            Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("DAETA_CANCELLATION_TAG");
             if (fragment!=null){
                 DialogFragment dialogFragment = (DialogFragment) fragment;
                 dialogFragment.dismiss();
             }
         }
-        else if (v.getId()==(R.id.application_applicationBtn)){
+        else if (v.getId()==(R.id.application_cancellationBtn)){
             if (daeta!=null){
-                daeta.setCovered();
-                daetaInterfacer2.onApplication(daeta, position);
-                //신청 버튼
-                Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("DAETA_APPLICATION_TAG");
+                cancelInterfacer.onCancellation(daeta, position);
+                Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag("DAETA_CANCELLATION_TAG");
                 if (fragment!=null){
                     DialogFragment dialogFragment = (DialogFragment) fragment;
                     dialogFragment.dismiss();
