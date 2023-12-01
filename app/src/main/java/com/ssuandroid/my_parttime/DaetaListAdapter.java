@@ -11,7 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class DaetaListAdapter extends RecyclerView.Adapter<DaetaListAdapter.DaetaListViewHolder> {
     private ArrayList<Daeta> daetaList;
@@ -48,6 +50,11 @@ public class DaetaListAdapter extends RecyclerView.Adapter<DaetaListAdapter.Daet
             }
         }
 
+        //date 형식 변환
+        Date date = daetaList.get(position).getDate();
+        SimpleDateFormat newFormat = new SimpleDateFormat("yyyy년 M월 d일");
+        String formattedDate = newFormat.format(date);
+
         //workTime (실제 일하는 시간, 예를 들어 3시간, 2.5시간 등.. ->이걸로 "일당"을 계산
         String timeRange = daetaList.get(position).getTime();
         String[] parts = timeRange.split(" - ");
@@ -62,15 +69,17 @@ public class DaetaListAdapter extends RecyclerView.Adapter<DaetaListAdapter.Daet
 
         double workHour = Double.parseDouble(endHour)-Double.parseDouble(startHour); //2
         double workMin = Double.parseDouble(endMin)-Double.parseDouble(startMin); //-30 또는 0 또는 30
+        long hourlyRate = daetaList.get(position).getWage();
 
         double workTotalTime = (workHour + workMin/60)*daetaList.get(position).getWage();
+        if (workTotalTime<0) workTotalTime=-workTotalTime; //음수 가능성 존재
         String dayWage= Integer.toString((int) workTotalTime);
         String workTime= daetaList.get(position).getTime();
-        String hourlyRate= Long.toString(daetaList.get(position).getWage());
 
+        holder.date.setText(formattedDate);
         holder.dayWage.setText(dayWage);
         holder.daetaWorkTime.setText(workTime);
-        holder.hourlyrate.setText(hourlyRate);
+        holder.hourlyRate.setText(Long.toString(hourlyRate));
 
         holder.descriptionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,17 +110,19 @@ public class DaetaListAdapter extends RecyclerView.Adapter<DaetaListAdapter.Daet
 
     public class DaetaListViewHolder extends RecyclerView.ViewHolder {
         private TextView branchName;
+        private TextView date;
         private TextView dayWage;
+        private TextView hourlyRate;
         private TextView daetaWorkTime;
-        private TextView hourlyrate;
         private Button descriptionButton;
         private Button applicationButton;
         public DaetaListViewHolder(@NonNull View itemView){
             super(itemView);
             branchName= (TextView) itemView.findViewById(R.id.branchName);
+            date = (TextView) itemView.findViewById(R.id.daeta_date);
             dayWage = (TextView) itemView.findViewById(R.id.dayWage);
+            hourlyRate = (TextView) itemView.findViewById(R.id.hourlyRate);
             daetaWorkTime = (TextView) itemView.findViewById(R.id.daetaWorkTime);
-            hourlyrate = (TextView) itemView.findViewById(R.id.daeta_wage);
             descriptionButton = (Button) itemView.findViewById(R.id.daeta_description_btn);
             applicationButton = (Button) itemView.findViewById(R.id.daeta_application_btn);
         }
