@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity {
                         if(task.isSuccessful()){
                             ToastCustom toastCustom = new ToastCustom(getApplicationContext());
                             toastCustom.showToast("로그인에 성공했어요!");
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
                         }else{
                             ToastCustom toastCustom = new ToastCustom(getApplicationContext());
