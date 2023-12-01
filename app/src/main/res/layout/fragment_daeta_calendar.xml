@@ -104,7 +104,7 @@
                 android:layout_alignBaseline="@+id/daeta_prevBtn"
                 android:layout_centerHorizontal="true"
                 android:layout_alignBottom="@id/daeta_prevBtn"
-                android:text="2023년 11월"
+                android:text="2023년 12월"
                 android:textAlignment="center"
                 android:textSize="25dp" />
 
