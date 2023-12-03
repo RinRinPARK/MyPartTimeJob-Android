@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
                                     //무조건 branchName 데이터를 다 받아오고 나서 새로운 Alba 객체를 생성해야
                                     //branchName에 null이 들어간 상태로 새로운 객체가 생성되는 일을 막을 수 있다.
                                     Alba alba= new Alba(userId, branchName, newAlbaCode, newAlbaWage);
-                                    db.collection("Alba").document(alba.getBranchName()).set(alba);
+                                    db.collection("Alba").document(alba.getBranchName()+" "+alba.getUserId()).set(alba);
                                 }
                             } else {
                                 Log.d("ymj", "Error getting documents: ", task.getException());
