@@ -19,6 +19,7 @@ public class Work {
     private String branchName;
 
     private long wage;
+    private int dayWage;
 
     @ServerTimestamp
     private Timestamp timestamp;
@@ -27,13 +28,14 @@ public class Work {
         //no-argument constructor 필요
     }
 
-    public Work( String userId, String participationCode, Date date, double workTime, String branchName, long wage) {
+    public Work( String userId, String participationCode, Date date, double workTime, String branchName, long wage, int dayWage) {
         this.userId = userId;
         this.participationCode = participationCode;
         this.date = date;
         this.workTime = workTime;
         this.branchName = branchName;
         this.wage = wage;
+        this.dayWage=dayWage;
     }
 
     public String getUserId() {
@@ -59,4 +61,5 @@ public class Work {
     public long getWage() {
         return wage;
     }
+    public long getDayWage(){return dayWage;}
 }

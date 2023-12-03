@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,6 +8,7 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/appTitle"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -20,6 +21,20 @@
         android:fontFamily="@font/bold">
 
     </TextView>
+
+    <ImageButton
+        android:id="@+id/salary_Btn"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10sp"
+        android:layout_marginRight="20sp"
+        android:background="@color/white"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_salary"
+        android:clickable="true">
+
+    </ImageButton>
 
 
 <!--        <androidx.cardview.widget.CardView-->
@@ -71,9 +86,10 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="40sp"
+        android:layout_marginRight="10sp"
         >
         <ImageView
             android:layout_width="65dp"
@@ -96,4 +112,4 @@
 
 
 
-</FrameLayout>
+</RelativeLayout>

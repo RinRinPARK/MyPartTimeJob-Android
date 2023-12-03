@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
     long newAlbaWage;
     String branchName;
     FirebaseUser user;
+    ImageButton salaryBtn;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -86,6 +88,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
 
         RelativeLayout newAlbaBtn = (RelativeLayout) view.findViewById(R.id.PlusButton);
         newAlbaBtn.setOnClickListener(this);
+
+        salaryBtn = (ImageButton) view.findViewById(R.id.salary_Btn);
+        salaryBtn.setOnClickListener(this);
 
         ToastCustom toastCustom = new ToastCustom(mContext);
 
@@ -131,6 +136,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener, Code
 
             codeInputDialogFragment.show(getParentFragmentManager(), "CODE_TAG");
         }
+        else if (v.getId()==R.id.salary_Btn){
+            SalaryFragment salaryFragment = new SalaryFragment();
+
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, salaryFragment).commit();
+        }
+
     }
 
     // MyFragmentInterfacer 구현: 알바 코드 dialog를 띄우고 데이터를 받기 위한 인터페이스. 코드 데이터를 받으면
