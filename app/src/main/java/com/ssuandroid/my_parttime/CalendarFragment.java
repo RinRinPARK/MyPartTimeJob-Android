@@ -24,6 +24,8 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -143,55 +145,58 @@ public class CalendarFragment extends Fragment {
         endDateCalendar.set(Calendar.SECOND, 59);
         Date end = endDateCalendar.getTime();
 
-        db.collection("Work")
-                .whereEqualTo("userId", 1)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int totalWage = 0;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                List<String> data = new ArrayList<>();
-                                Timestamp timestamp = (Timestamp) document.get("date");
-                                Date timestampToDate = timestamp.toDate();
-                                String dateString = timestampToDate.toString();
-                                if (timestampToDate.after(end) && timestampToDate.before(start)) {
-                                    String branchName = (String) document.get("branchName");
-                                    totalWage += (((Number) document.get("wage")).intValue() * ((Number) document.get("workTime")).intValue());
-                                    String day = null;
-                                    SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
-                                    try {
-                                        Date date = dateFormat.parse(dateString);
-                                        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.KOREA);
-                                        day = dayFormat.format(date);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            db.collection("Work")
+                    .whereEqualTo("userId", (String) user.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                int totalWage = 0;
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    List<String> data = new ArrayList<>();
+                                    Timestamp timestamp = (Timestamp) document.get("date");
+                                    Date timestampToDate = timestamp.toDate();
+                                    String dateString = timestampToDate.toString();
+                                    if (timestampToDate.after(end) && timestampToDate.before(start)) {
+                                        String branchName = (String) document.get("branchName");
+                                        totalWage += (((Number) document.get("wage")).intValue() * ((Number) document.get("workTime")).intValue());
+                                        String day = null;
+                                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
+                                        try {
+                                            Date date = dateFormat.parse(dateString);
+                                            SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.KOREA);
+                                            day = dayFormat.format(date);
+                                        } catch (ParseException e) {
+                                            e.printStackTrace();
+                                        }
+                                        if (!(branchNames.contains(branchName)))  {
+                                            branchNames.add(branchName);
+                                        }
+                                        data.add(branchName);
+                                        data.add(day);
+                                        datesAndBranches.add(data);
                                     }
-                                    if (!(branchNames.contains(branchName)))  {
-                                        branchNames.add(branchName);
-                                    }
-                                    data.add(branchName);
-                                    data.add(day);
-                                    datesAndBranches.add(data);
                                 }
+
+                                // 오른쪽 상단 알바 지점 라벨 추가
+                                RelativeLayout storeListView = view.findViewById(R.id.store_list);
+                                initializeCalendarLabel(storeListView, branchNames);
+
+                                // 캘린더 뷰 내부에 알바 지점 라벨 추가
+                                addLabelsOnCalendar(datesAndBranches, branchNames);
+
+                                // 예상 월급 뷰에 뿌리기
+                                TextView expWageNum = (TextView) view.findViewById(R.id.exp_wage_num);
+                                expWageNum.setText(totalWage + "원");
+                            } else {
+                                Log.d("Surin", "Error getting documents: ", task.getException());
                             }
-
-                            // 오른쪽 상단 알바 지점 라벨 추가
-                            RelativeLayout storeListView = view.findViewById(R.id.store_list);
-                            initializeCalendarLabel(storeListView, branchNames);
-
-                            // 캘린더 뷰 내부에 알바 지점 라벨 추가
-                            addLabelsOnCalendar(datesAndBranches, branchNames);
-
-                            // 예상 월급 뷰에 뿌리기
-                            TextView expWageNum = (TextView) view.findViewById(R.id.exp_wage_num);
-                            expWageNum.setText(totalWage + "원");
-                        } else {
-                            Log.d("Surin", "Error getting documents: ", task.getException());
                         }
-                    }
-                });
+                    });
+        }
 
     }
 
