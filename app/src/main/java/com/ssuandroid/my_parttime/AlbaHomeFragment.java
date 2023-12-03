@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -172,8 +173,20 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
             workedTimeDialogFragment.setFragmentInterfacer(this);
             workedTimeDialogFragment.show(getActivity().getSupportFragmentManager(), "WORKED_TIME_TAG");
         }
-        else if (v.getId()==R.id.moveToDaetaCalendarBtn){
-            //대타 캘린더로 이동
+        else if (v.getId()==R.id.moveToDaetaCalendarBtn) {
+
+            // daeta calendar fragment로 브랜치 이름 전달
+            Bundle result = new Bundle();
+            // 번들 키 값과 전달 할 데이터 입력
+            result.putString("branchName", selectedAlba.getBranchName());
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+            // 대타캘린더로 이동 + branchName 데이터 전달
+            DaetaCalendarFragment daetaCalendarFragment = new DaetaCalendarFragment();
+            daetaCalendarFragment.setArguments(result);
+            transaction.replace(R.id.alba_home_fragment_view, daetaCalendarFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
         else if (v.getId()==R.id.back_to_home_btn){
             //homefragment로 돌아가기
