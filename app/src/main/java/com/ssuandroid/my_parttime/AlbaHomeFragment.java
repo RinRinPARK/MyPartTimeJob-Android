@@ -39,6 +39,7 @@ import org.w3c.dom.Text;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
     TextView albaWage;
     TextView albaWorkedTime;
     TextView albaSalary;
+    TextView thisMonthWorkHour;
     Alba selectedAlba;
     String selectedAlbaName;
     double totalWorkedTime = 0;
@@ -89,6 +91,14 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
 
         getWorkObject(); //db로부터 데이터를 얻어와 albaArrayList에 세팅
 
+        //현재 몇 월인지를 기준으로 월급으로 가져오고자 함
+        Calendar calendar = Calendar.getInstance();
+        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1; // 월은 0부터 시작하므로 1을 더합니다.
+
+        Date firstDayOfMonth = new Date(currentYear - 1900, currentMonth - 1, 1);
+        Date lastDayOfMonth = new Date(currentYear - 1900, currentMonth, 0);
+
         //recyclerView 사용을 위한 초기 작업
         recyclerViewWorkLog = (RecyclerView) view.findViewById(R.id.workLogRecyclerView);
         recyclerViewWorkLog.setHasFixedSize(true);
@@ -106,17 +116,21 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
         albaWage = (TextView) view.findViewById(R.id.albaHome_HourlyRate);
         albaWorkedTime = (TextView) view.findViewById(R.id.albaHome_workedTime);
         albaSalary = (TextView) view.findViewById(R.id.albaHome_salary);
+        thisMonthWorkHour = (TextView) view.findViewById(R.id.this_month_workHour);
 
         //값을 바로 받아 와서 바꿔줌
         albaTitle.setText(selectedAlba.getBranchName());
         albaWage.setText(Long.toString(selectedAlba.getWage()));
+        thisMonthWorkHour.setText(currentMonth+"월 근무 시간:");
 
 
         // branchName을 이용하여 Work 컬렉션에서 총 일한 시간과 총 예상 월급을 계산
         db.collection("Work")
                 .whereEqualTo("branchName", selectedAlba.getBranchName())
                 .whereEqualTo("userId", user.getUid())
-                .orderBy("date", Query.Direction.ASCENDING)
+                .whereGreaterThanOrEqualTo("date", firstDayOfMonth)
+                .whereLessThanOrEqualTo("date", lastDayOfMonth)
+                .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -146,6 +160,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
         db.collection("Work")
                 .whereEqualTo("branchName", selectedAlbaName)
                 .whereEqualTo("userId", user.getUid() )
+                .orderBy("date", Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
