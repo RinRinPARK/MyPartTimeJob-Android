@@ -230,8 +230,43 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
             date = dateFormat.parse(workedDate);
         } catch (ParseException e) {e.printStackTrace(); }
 
-        Work work = new Work(userId, selectedAlba.getParticipationCode(),date,  workedTime, selectedAlba.getBranchName(), selectedAlba.getWage());
+        int dayWage= (int) (selectedAlba.getWage() * workedTime);
+
+        Work work = new Work(userId, selectedAlba.getParticipationCode(),date,  workedTime, selectedAlba.getBranchName(), selectedAlba.getWage(), dayWage);
         db.collection("Work").document().set(work);
+
+        String dateString = date.toString();
+
+        // 문자열에서 월, 연도를 추출
+        String monthSubstring = dateString.substring(4, 7);
+        String yearSubstring = dateString.substring(30, 34);
+
+        // 월을 숫자로 변환
+        int month = getMonthNumber(monthSubstring);
+        int year= Integer.parseInt(yearSubstring);
+
+        //month를 기준으로 Work 객체를 Salary 컬렉션 안의 / 해당 월 문서 안의 / Work 문서 안에 Work 객체를 넣음
+        //work 미리 결정 안 해도 알아서 생성됨
+        db.collection("Salary").document(yearSubstring).collection(Integer.toString(month)).document().set(work);
+
+    }
+
+    private static int getMonthNumber(String month) {
+        switch (month) {
+            case "Jan": return 1;
+            case "Feb": return 2;
+            case "Mar": return 3;
+            case "Apr": return 4;
+            case "May": return 5;
+            case "Jun": return 6;
+            case "Jul": return 7;
+            case "Aug": return 8;
+            case "Sep": return 9;
+            case "Oct": return 10;
+            case "Nov": return 11;
+            case "Dec": return 12;
+            default: return -1; // 올바르지 않은 값이면 -1을 반환하거나 예외 처리를 수행할 수 있습니다.
+        }
     }
 
 }
