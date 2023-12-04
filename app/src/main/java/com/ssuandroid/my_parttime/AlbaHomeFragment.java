@@ -234,21 +234,6 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
 
         Work work = new Work(userId, selectedAlba.getParticipationCode(),date,  workedTime, selectedAlba.getBranchName(), selectedAlba.getWage(), dayWage);
         db.collection("Work").document().set(work);
-
-        String dateString = date.toString();
-
-        // 문자열에서 월, 연도를 추출
-        String monthSubstring = dateString.substring(4, 7);
-        String yearSubstring = dateString.substring(30, 34);
-
-        // 월을 숫자로 변환
-        int month = getMonthNumber(monthSubstring);
-        int year= Integer.parseInt(yearSubstring);
-
-        //month를 기준으로 Work 객체를 Salary 컬렉션 안의 / 해당 월 문서 안의 / Work 문서 안에 Work 객체를 넣음
-        //work 미리 결정 안 해도 알아서 생성됨
-        db.collection("Salary").document(yearSubstring).collection(Integer.toString(month)).document().set(work);
-
     }
 
     private static int getMonthNumber(String month) {
