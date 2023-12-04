@@ -194,6 +194,8 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
             Bundle result = new Bundle();
             // 번들 키 값과 전달 할 데이터 입력
             result.putString("branchName", selectedAlba.getBranchName());
+            result.putString("participationCode", selectedAlba.getParticipationCode());
+            result.putString("wage", Long.toString(selectedAlba.getWage()));
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
             // 대타캘린더로 이동 + branchName 데이터 전달
@@ -234,24 +236,6 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
 
         Work work = new Work(userId, selectedAlba.getParticipationCode(),date,  workedTime, selectedAlba.getBranchName(), selectedAlba.getWage(), dayWage);
         db.collection("Work").document().set(work);
-    }
-
-    private static int getMonthNumber(String month) {
-        switch (month) {
-            case "Jan": return 1;
-            case "Feb": return 2;
-            case "Mar": return 3;
-            case "Apr": return 4;
-            case "May": return 5;
-            case "Jun": return 6;
-            case "Jul": return 7;
-            case "Aug": return 8;
-            case "Sep": return 9;
-            case "Oct": return 10;
-            case "Nov": return 11;
-            case "Dec": return 12;
-            default: return -1; // 올바르지 않은 값이면 -1을 반환하거나 예외 처리를 수행할 수 있습니다.
-        }
     }
 
 }

@@ -45,6 +45,8 @@ public class DaetaCalendarFragment extends Fragment implements View.OnClickListe
     private String[] storageCalendar = new String[42];
     private GregorianCalendar cal;
     private String branchName;
+    private String participationCode;
+    private long wage;
 
     FirebaseFirestore db;
     RecyclerView recyclerView;
@@ -63,6 +65,8 @@ public class DaetaCalendarFragment extends Fragment implements View.OnClickListe
 
         if (getArguments() != null) {
             branchName = getArguments().getString("branchName");
+            participationCode = getArguments().getString("participationCode");
+            wage = Long.parseLong(getArguments().getString("wage"));
         }
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -262,10 +266,10 @@ public class DaetaCalendarFragment extends Fragment implements View.OnClickListe
             daetaDialogFragment.show(getActivity().getSupportFragmentManager(), "DAETA_DIALOG_TAG");
         }
     }
-    public void newDaetaObject(Date date, String time, String description){
-        //해결해야 하는 거: participationCode 받아오기, externalTF 여부 체크하는 거 추가해서 함수 매개변수도 달라져야함
+    public void newDaetaObject(Date date,   String time, String description, Boolean externalTF){
+        //해결해야 하는 거: wage, externalTF 여부 체크하는 거 추가해서 함수 매개변수도 달라져야함
         Log.d("ymj", date+" "+time+" "+description);
-        Daeta newDaeta = new Daeta("branchName", 0 , date, time, description, user.getUid(), null, true);
+        Daeta newDaeta = new Daeta(participationCode, wage , date, time, description, user.getUid(), null, externalTF);
         db.collection("Daeta").document(newDaeta.getParticipationCode()+" "+newDaeta.getDate()+" "+newDaeta.getTime()).set(newDaeta);
     }
 }
