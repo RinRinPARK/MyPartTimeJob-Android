@@ -235,7 +235,7 @@ public class AlbaHomeFragment extends Fragment implements View.OnClickListener, 
         int dayWage= (int) (selectedAlba.getWage() * workedTime);
 
         Work work = new Work(userId, selectedAlba.getParticipationCode(),date,  workedTime, selectedAlba.getBranchName(), selectedAlba.getWage(), dayWage);
-        db.collection("Work").document().set(work);
+        db.collection("Work").document(work.getUserId()+" "+work.getParticipationCode()+" "+work.getDate()).set(work);
     }
 
 }

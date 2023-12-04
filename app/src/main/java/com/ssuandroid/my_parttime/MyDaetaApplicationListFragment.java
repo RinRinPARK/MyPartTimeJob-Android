@@ -125,6 +125,11 @@ public class MyDaetaApplicationListFragment extends Fragment implements DaetaCan
 
     @Override
     public void onCancellation(Daeta daeta, int position) {
+//        신청 취소시 다시 work에서 삭제
+        db.collection("Work").document(daeta.getApplicantId()+" "+daeta.getParticipationCode()+" "+daeta.getDate()).delete();
+        Log.d("ymj", daeta.getApplicantId()+" "+daeta.getParticipationCode()+" "+daeta.getDate());
+
+        //daeta 객체도 수정
         daeta.cancelSetApplicantId();
         daeta.cancelSetCovered();
         db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);

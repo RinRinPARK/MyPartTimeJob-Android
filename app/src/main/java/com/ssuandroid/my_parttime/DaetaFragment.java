@@ -227,7 +227,8 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
             daeta.setCovered();
             daeta.setApplicantId(user.getUid());
             db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
-            //covered field를 바꾼 객체를 넣어주어 목록에서 사라지게 한다.
+
+            makeWorkObject(daeta);
 
             //신청이 완료되면 토스트를 띄운다
             ToastCustom toastCustom = new ToastCustom(mContext);
@@ -241,10 +242,37 @@ public class DaetaFragment extends Fragment implements View.OnClickListener, Dae
             daeta.setApplicantId(user.getUid());
             db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
 
+            makeWorkObject(daeta);
+
             //신청이 완료되면 토스트를 띄운다
             ToastCustom toastCustom = new ToastCustom(mContext);
             toastCustom.showToast("외부 대타 신청이 완료되었어요!");
     };
+
+    //대타 신청시 work에도 추가함
+    public void makeWorkObject(Daeta daeta){
+        //workTime (실제 일하는 시간, 예를 들어 3시간, 2.5시간 등.. ->이걸로 "일당"을 계산
+        String timeRange = daeta.getTime();
+        String[] parts = timeRange.split(" - ");
+
+        // 첫 번째 시간대 13:30
+        String startHour = parts[0].split(":")[0]; //13
+        String startMin = parts[0].split(":")[1]; //30
+
+        // 두 번째 시간대에서 15:00
+        String endHour = parts[1].split(":")[0]; //15
+        String endMin = parts[1].split(":")[1]; //00
+
+        double workHour = Double.parseDouble(endHour)-Double.parseDouble(startHour); //2
+        double workMin = Double.parseDouble(endMin)-Double.parseDouble(startMin); //-30 또는 0 또는 30
+        double daetaWorkTotalTime = (workHour + workMin/60);
+        if (daetaWorkTotalTime<0) daetaWorkTotalTime=-daetaWorkTotalTime; //음수 가능성 존재
+
+        Work work = new Work(user.getUid(), daeta.getParticipationCode(), daeta.getDate(), daetaWorkTotalTime , daeta.getBranchName(), daeta.getWage(), (int)(daeta.getWage()*daetaWorkTotalTime));
+        db.collection("Work").document(daeta.getApplicantId()+" "+daeta.getParticipationCode()+" "+daeta.getDate()).set(work);
+    }
+
+
 }
 
 
