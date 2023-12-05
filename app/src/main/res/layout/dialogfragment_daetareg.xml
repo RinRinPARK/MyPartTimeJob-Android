@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/lightgray"
+    android:gravity="center"
+    android:minWidth="300dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="10dp">
+
+            <TextView
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:layout_marginBottom="0dp"
+                android:gravity="left"
+                android:minHeight="80dp"
+                android:paddingLeft="28dp"
+                android:paddingTop="25dp"
+                android:paddingBottom="0dp"
+                android:textSize="25sp"
+                android:text="대타 구하기 "></TextView>
+
+
+
+        <View
+            android:layout_marginLeft="13dp"
+            android:layout_width="155dp"
+            android:layout_height="2dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="0dp"
+            android:background="@color/black"
+            ></View>
+
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/externalCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="외부에서 구인 여부"
+        android:textColor="#2c2d85"
+        android:buttonTint="@color/blue"
+        android:checked="false"
+        android:textSize="17dp"
+        ></CheckBox>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="날짜 입력"
+            android:textColor="@color/middlegray"
+            android:textSize="13dp"></TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/InputText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/workedtime_button_custom"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textSize="20dp">
+
+            </TextView>
+
+            <ImageButton
+                android:id="@+id/InputCalendarBtn"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="3dp"
+                android:background="@android:color/transparent"
+                android:padding="0dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/calendar"
+                android:tint="@color/middlegray">
+
+            </ImageButton>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="250dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:background="#e8e8e8"
+        android:layout_marginBottom="15dp"
+        ></View>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="대타 근무 시간 입력"
+            android:textSize="13dp">
+
+        </TextView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <NumberPicker
+                android:id="@+id/TimeNumberPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_margin="0dp"
+                android:paddingTop="0dp"
+                android:theme="@style/NumberPickerStyle">
+            </NumberPicker>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" - "
+                android:layout_gravity="center"
+                android:textSize="17dp"></TextView>
+            <NumberPicker
+                android:id="@+id/TimeNumberPicker1"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_margin="0dp"
+                android:paddingTop="0dp"
+                android:theme="@style/NumberPickerStyle">
+            </NumberPicker>
+        </LinearLayout>
+
+        <View
+            android:layout_width="250dp"
+            android:layout_height="5dp"
+            android:layout_gravity="center"
+            android:background="#e8e8e8"
+            android:layout_marginBottom="15dp"
+            ></View>
+
+        <EditText
+            android:id="@+id/editTextReason"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:hint="설명을 입력하세요"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:background="@color/lightgray"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="right"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/daetaInputButton"
+            android:background="@drawable/dialog_button_custom"
+            android:layout_marginRight="10dp"
+            android:layout_height="45dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="입력"
+            android:textSize="18sp"
+            ></Button>
+
+        <Button
+            android:id="@+id/daetaCloseButton"
+            android:background="@drawable/dialog_button_custom"
+            android:layout_height="45dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="닫기"
+            android:textSize="18sp"
+            ></Button>
+
+    </LinearLayout>
+</LinearLayout>

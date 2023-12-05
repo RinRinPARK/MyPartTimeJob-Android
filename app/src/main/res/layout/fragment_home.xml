@@ -72,12 +72,13 @@
 
     <TextView
         android:id="@+id/noAlbaState"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textStyle="bold"
         android:textSize="30sp"
-        android:visibility="gone"
         android:text="새로운 알바를 추가해보세요!"></TextView>
 
     <RelativeLayout

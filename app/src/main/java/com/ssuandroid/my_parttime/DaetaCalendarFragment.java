@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +22,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -37,14 +40,18 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-public class DaetaCalendarFragment extends Fragment {
+public class DaetaCalendarFragment extends Fragment implements View.OnClickListener, DaetaDialogFragment.NewDaetaInterfacer {
 
     private String[] storageCalendar = new String[42];
     private GregorianCalendar cal;
     private String branchName;
+    private String participationCode;
+    private long wage;
 
     FirebaseFirestore db;
     RecyclerView recyclerView;
+    Button newDaetaObject;
+    FirebaseUser user;
 
     @Nullable
     @Override
@@ -58,12 +65,22 @@ public class DaetaCalendarFragment extends Fragment {
 
         if (getArguments() != null) {
             branchName = getArguments().getString("branchName");
+            participationCode = getArguments().getString("participationCode");
+            wage = Long.parseLong(getArguments().getString("wage"));
         }
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+        }
+
         TextView storeNameView = view.findViewById(R.id.daeta_store_name);
         storeNameView.setText(branchName);
         initializeCloudFirestore();
         init(view);
         recyclerView = view.findViewById(R.id.daeta_calendar_recyclerView);
+        newDaetaObject= view.findViewById(R.id.find_daeta_button);
+        newDaetaObject.setOnClickListener(this);
     }
 
     protected void init(View rootView) {
@@ -240,5 +257,19 @@ public class DaetaCalendarFragment extends Fragment {
                     }
                 }
             }
+    }
+
+    public void onClick(View v){
+        if (v.getId()==R.id.find_daeta_button){
+            DaetaDialogFragment daetaDialogFragment = new DaetaDialogFragment();
+            daetaDialogFragment.setNewDaetaInterfacer(this);
+            daetaDialogFragment.show(getActivity().getSupportFragmentManager(), "DAETA_DIALOG_TAG");
+        }
+    }
+    public void newDaetaObject(Date date,   String time, String description, Boolean externalTF){
+        //해결해야 하는 거: wage, externalTF 여부 체크하는 거 추가해서 함수 매개변수도 달라져야함
+        Log.d("ymj", date+" "+time+" "+description);
+        Daeta newDaeta = new Daeta(participationCode, wage , date, time, description, user.getUid(), null, externalTF);
+        db.collection("Daeta").document(newDaeta.getParticipationCode()+" "+newDaeta.getDate()+" "+newDaeta.getTime()).set(newDaeta);
     }
 }
