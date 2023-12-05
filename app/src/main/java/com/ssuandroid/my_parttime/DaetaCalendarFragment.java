@@ -269,7 +269,7 @@ public class DaetaCalendarFragment extends Fragment implements View.OnClickListe
     public void newDaetaObject(Date date,   String time, String description, Boolean externalTF){
         //해결해야 하는 거: wage, externalTF 여부 체크하는 거 추가해서 함수 매개변수도 달라져야함
         Log.d("ymj", date+" "+time+" "+description);
-        Daeta newDaeta = new Daeta(participationCode, wage , date, time, description, user.getUid(), null, externalTF);
+        Daeta newDaeta = new Daeta(participationCode, branchName,  wage , date, time, description, user.getUid(), null, externalTF);
         db.collection("Daeta").document(newDaeta.getParticipationCode()+" "+newDaeta.getDate()+" "+newDaeta.getTime()).set(newDaeta);
     }
 }
