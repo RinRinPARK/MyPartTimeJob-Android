@@ -162,7 +162,7 @@ public class CalendarFragment extends Fragment {
                                     String dateString = timestampToDate.toString();
                                     if (timestampToDate.after(end) && timestampToDate.before(start)) {
                                         String branchName = (String) document.get("branchName");
-                                        totalWage += (((Number) document.get("wage")).intValue() * ((Number) document.get("workTime")).intValue());
+                                        totalWage += (((Number) document.get("wage")).intValue() * ((Number) document.get("workTime")).doubleValue());
                                         String day = null;
                                         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US);
                                         try {
