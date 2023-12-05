@@ -37,8 +37,9 @@ public class Daeta  {
         //no-argument constructor 필요
     }
 
-    public Daeta(String participationCode, long wage , Date date, String time, String description, String writerId, String applicantId, boolean externalTF) {
+    public Daeta(String participationCode, String branchName, long wage , Date date, String time, String description, String writerId, String applicantId, boolean externalTF) {
         this.participationCode = participationCode;
+        this.branchName = branchName;
         this.wage= wage;
         this.date = date;
         this.time = time;
