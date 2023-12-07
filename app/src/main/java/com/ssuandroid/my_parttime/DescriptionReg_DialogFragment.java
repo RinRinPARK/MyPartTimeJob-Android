@@ -33,9 +33,9 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
     String branchName;
     String itemDay;
     String participationCode;
-    Date date;
+    Timestamp date;
     double workTime;
-    int wage;
+    long wage;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public DescriptionReg_DialogFragment() {
     }
@@ -94,13 +94,10 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
                                 if (day.equals(itemDay)) {
                                     String writerId = (String) document.get("writerId");
                                     final String[] writerName = new String[1];
-//                                    participationCode = (String) document.get("participationCode");
-//                                    date = (Date) document.get("date");
-//                                    workTime = calculateHours((String) document.get("time"));
-//                                    wage = (int) document.get("wage");
-//                                    Log.d("Surin", participationCode);
-//                                    Log.d("Surin", date.toString());
-//                                    Log.d("Surin", String.valueOf(workTime));
+                                    participationCode = (String) document.get("participationCode");
+                                    date = (Timestamp) document.get("date");
+                                    workTime = calculateHours((String) document.get("time"));
+                                    wage = (long) document.get("wage");
                                     db.collection("User")
                                             .whereEqualTo("id", writerId)
                                             .get()
@@ -140,8 +137,12 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
             }
         }
         else if (v.getId()==(R.id.description_regBtn)){
-            Work work = new Work(user.getUid(), participationCode,date,  workTime, branchName, (long) (wage/workTime), wage);
+            Log.d("Surin", "대타신청");
+            Work work = new Work(user.getUid(), participationCode, date.toDate(),  workTime, branchName, wage, (int) (wage*workTime));
             db.collection("Work").document(work.getUserId()+" "+work.getParticipationCode()+" "+work.getDate()).set(work);
+            Log.d("Surin", "신청완료");
+            DialogFragment dialogFragment = (DialogFragment) fragment;
+            dialogFragment.dismiss();
         }
     }
 
