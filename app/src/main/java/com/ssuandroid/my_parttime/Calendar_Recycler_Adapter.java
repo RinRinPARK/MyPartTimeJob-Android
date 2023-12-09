@@ -28,7 +28,6 @@ public class Calendar_Recycler_Adapter extends RecyclerView.Adapter<Calendar_Rec
             dayTextView = itemView.findViewById(R.id.day_recycler_calendar);
         }
     }
-
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

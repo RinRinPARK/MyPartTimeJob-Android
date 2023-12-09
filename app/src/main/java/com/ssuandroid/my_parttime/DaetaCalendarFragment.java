@@ -9,13 +9,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,14 +26,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -234,6 +229,7 @@ public class DaetaCalendarFragment extends Fragment implements View.OnClickListe
 
                     if (recyclerItem != null) {
                         TextView tvItemGridView = recyclerItem.findViewById(R.id.day_recycler_calendar);
+
                         int itemDay = 0;
 
                         try {
@@ -241,6 +237,18 @@ public class DaetaCalendarFragment extends Fragment implements View.OnClickListe
                         } catch (NumberFormatException e) {
                             continue;
                         }
+
+                        // 클릭 리스너 설정
+                        tvItemGridView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Log.d("Surin", "클릭리스너");
+                                DescriptionReg_DialogFragment descriptionRegDialogFragment = new DescriptionReg_DialogFragment(branchName, tvItemGridView.getText().toString().trim());
+                                descriptionRegDialogFragment.show(getActivity().getSupportFragmentManager(), "DAETA_CALENDAR_DESCRIPTION_TAG");
+                            }
+                        });
+
+
                         if (itemDay == day) {
                             ImageView imageView = recyclerItem.findViewById(R.id.image_daeta_recycler_calendar);
                             imageView.setVisibility(View.VISIBLE);
