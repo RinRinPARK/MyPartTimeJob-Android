@@ -36,6 +36,7 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
     Timestamp date;
     double workTime;
     long wage;
+    Daeta daeta;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     public DescriptionReg_DialogFragment() {
     }
@@ -69,7 +70,6 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
 
         TextView name = (TextView) v.findViewById(R.id.description_name);
         TextView description = (TextView) v.findViewById(R.id.description_text);
-
         Button closeButton = (Button) v.findViewById(R.id.description_closeBtn);
         closeButton.setOnClickListener(this);
         Button inputButton = (Button) v.findViewById(R.id.description_regBtn);
@@ -85,15 +85,14 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-
                                 Timestamp timestamp = (Timestamp) document.get("date");
                                 Date timestampToDate = timestamp.toDate();
+                                final String[] writerName = {null};
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd");
                                 sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
                                 String day = String.valueOf(Integer.parseInt(sdf.format(timestampToDate)));
                                 if (day.equals(itemDay)) {
                                     String writerId = (String) document.get("writerId");
-                                    final String[] writerName = new String[1];
                                     participationCode = (String) document.get("participationCode");
                                     date = (Timestamp) document.get("date");
                                     workTime = calculateHours((String) document.get("time"));
@@ -106,7 +105,7 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if(task.isSuccessful()) {
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            writerName[0] = (String) document.get("name");
+                                                            name.setText((String) document.get("name"));
                                                         }
                                                     }  else {
                                                         Log.d("Surin", "Error getting documents: ", task.getException());
@@ -114,8 +113,8 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
                                                 }
                                             });
 
-                                    name.setText(writerName[0]);
                                     description.setText((String) document.get("description"));
+                                    daeta = new Daeta(participationCode, branchName, wage, timestampToDate, (String) document.get("time"), (String) document.get("description"), (String) document.get("writerId"), null, (boolean) document.get("externalTF"));
                                 }
                             }
                         } else {
@@ -138,6 +137,9 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
         }
         else if (v.getId()==(R.id.description_regBtn)){
             Log.d("Surin", "대타신청");
+            daeta.setCovered();
+            daeta.setApplicantId(user.getUid());
+            db.collection("Daeta").document(daeta.getParticipationCode()+" "+daeta.getDate()+" "+daeta.getTime()).set(daeta);
             Work work = new Work(user.getUid(), participationCode, date.toDate(),  workTime, branchName, wage, (int) (wage*workTime));
             db.collection("Work").document(work.getUserId()+" "+work.getParticipationCode()+" "+work.getDate()).set(work);
             Log.d("Surin", "신청완료");
