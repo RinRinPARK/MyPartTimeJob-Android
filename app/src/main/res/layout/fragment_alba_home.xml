@@ -166,7 +166,7 @@
         android:id="@+id/workLogRecyclerView"
         android:layout_below="@id/albaHome_Line"
         android:layout_width="match_parent"
-        android:layout_height="380sp"
+        android:layout_height="270sp"
         android:layout_marginTop="4sp"
         android:layout_marginBottom="4sp">
 

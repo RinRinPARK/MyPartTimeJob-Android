@@ -49,7 +49,7 @@
         <Button
             android:id="@+id/application_closeBtn"
             android:background="@drawable/daetaapplication_button_custom_cancel"
-            android:layout_width="120sp"
+            android:layout_width="90sp"
             android:layout_height="wrap_content"
             android:layout_marginRight="15sp"
             android:text="닫기"></Button>
@@ -57,7 +57,7 @@
         <Button
             android:id="@+id/application_cancellationBtn"
             android:background="@drawable/daetaapplication_button_custom_confirm"
-            android:layout_width="120sp"
+            android:layout_width="90sp"
             android:layout_height="wrap_content"
             android:text="신청 취소"></Button>
 

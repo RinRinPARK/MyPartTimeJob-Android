@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="3sp"
         android:text="파리바게뜨 숭실대점"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:textColor="@color/black"
         android:fontFamily="@font/bold">
     </TextView>
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="50000"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textColor="#5A72ED"
                 android:fontFamily="@font/bold">
             </TextView>
@@ -49,7 +49,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignRight="@+id/dayWage"
                 android:text="원"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textColor="#5A72ED"
                 android:fontFamily="@font/bold"></TextView>
         </LinearLayout>
@@ -139,12 +139,12 @@
 
         <Button
             android:id="@+id/daeta_description_btn"
-            android:layout_width="80sp"
-            android:layout_height="45sp"
+            android:layout_width="55sp"
+            android:layout_height="30sp"
             android:layout_margin="5sp"
             android:background="@drawable/daeta_recycler_button_custom"
             android:text="상세 내용"
-            android:textSize="18sp"
+            android:textSize="13sp"
             android:elevation="8dp"
             android:stateListAnimator="@null"
             android:clickable="true"
@@ -152,12 +152,12 @@
 
         <Button
             android:id="@+id/daeta_application_btn"
-            android:layout_width="80sp"
-            android:layout_height="45sp"
+            android:layout_width="55sp"
+            android:layout_height="30sp"
             android:layout_margin="5sp"
             android:background="@drawable/daeta_recycler_button_custom"
             android:text="신청"
-            android:textSize="18sp"
+            android:textSize="13sp"
             android:elevation="8dp"
             android:stateListAnimator="@null"
             android:clickable="true"

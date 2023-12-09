@@ -16,14 +16,14 @@
 
             <TextView
                 android:id="@+id/month_wage"
-                android:layout_width="225dp"
-                android:layout_height="50dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@drawable/textview_border"
                 android:fontFamily="@font/bold"
                 android:padding="10dp"
                 android:text="00월 월급 달력"
                 android:textColor="@color/black"
-                android:textSize="27sp" />
+                android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/exp_wage"

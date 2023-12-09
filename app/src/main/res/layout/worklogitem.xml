@@ -22,7 +22,7 @@
         android:fontFamily="@font/bold"
         android:text="2023.10.17"
         android:textColor="@color/black"
-        android:textSize="14sp"></TextView>
+        android:textSize="10sp"></TextView>
 
     <TextView
         android:id="@+id/earnedMoney"
@@ -32,7 +32,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:textColor="@color/gray"
-        android:textSize="35sp"
+        android:textSize="23sp"
         android:text="19,240원"
         android:textStyle="bold"></TextView>
 

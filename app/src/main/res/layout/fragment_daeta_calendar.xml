@@ -27,7 +27,7 @@
                 android:padding="10dp"
                 android:text="예시가게 예시점포"
                 android:textColor="@color/black"
-                android:textSize="27sp" />
+                android:textSize="20sp" />
 
             <RelativeLayout
                 android:id="@+id/store_list"
@@ -51,7 +51,7 @@
                     android:layout_toRightOf="@id/looking_job_image"
                     android:text="구인 중"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/complete_job_image"
@@ -72,7 +72,7 @@
                     android:layout_toRightOf="@id/complete_job_image"
                     android:text="구인 완료"
                     android:textColor="@color/black"
-                    android:textSize="15sp" />
+                    android:textSize="12sp" />
 
             </RelativeLayout>
 

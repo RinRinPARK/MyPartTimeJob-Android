@@ -23,7 +23,7 @@
         android:fontFamily="@font/bold"
         android:text="파리바게뜨 숭실대점"
         android:textColor="@color/black"
-        android:textSize="30sp"></TextView>
+        android:textSize="23sp"></TextView>
 
 
     <TextView

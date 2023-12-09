@@ -96,7 +96,7 @@
         android:id="@+id/daetaListRecyclerView"
         android:layout_below="@id/albaHome_Line"
         android:layout_width="match_parent"
-        android:layout_height="520sp"
+        android:layout_height="400sp"
         android:layout_marginTop="4sp"
         android:layout_marginBottom="4sp">
 
