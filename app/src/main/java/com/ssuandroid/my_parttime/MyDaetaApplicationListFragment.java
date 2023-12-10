@@ -88,6 +88,7 @@ public class MyDaetaApplicationListFragment extends Fragment implements DaetaCan
     public void getDaetaObject(){
         db.collection("Daeta")
                 .whereEqualTo("applicantId", uid)
+                .whereEqualTo("externalTF", true)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
