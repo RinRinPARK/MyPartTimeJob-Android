@@ -1,56 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="200dp"
     android:background="@color/lightgray"
     android:orientation="vertical"
-    android:gravity="left"
+    android:gravity="center"
     android:minWidth="300dp">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginLeft="16sp"
-        android:layout_marginTop="5sp">
+        android:layout_marginTop="5sp"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="40sp"
-        android:layout_height="40sp"
-        android:layout_gravity="left"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/ic_user">
-    </ImageView>
+        <ImageView
+            android:layout_width="25sp"
+            android:layout_height="25sp"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_user"></ImageView>
+
         <TextView
             android:id="@+id/description_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
-            android:paddingTop="8dp"
             android:fontFamily="@font/bold"
-            android:textColor="@color/black"
+            android:paddingTop="8dp"
             android:text=""
-            android:textSize="15sp"></TextView>
+            android:textColor="@color/black"
+            android:textSize="18sp"></TextView>
 
         <TextView
+            android:id="@+id/alba_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10sp"
             android:paddingTop="8dp"
+            android:text="구인 중인 공고가 없어요!"
             android:textColor="@color/black"
-            android:text="알바생"
-            android:textSize="12sp"></TextView>
+            android:textSize="8sp"></TextView>
 
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginTop="10sp">
 
         <TextView
@@ -70,13 +69,12 @@
         android:layout_marginTop="15sp"
         android:layout_marginBottom="15sp"
         android:orientation="horizontal"
-        android:layout_gravity="center_vertical|center_horizontal"
         android:paddingBottom="5dp">
 
         <Button
             android:id="@+id/description_closeBtn"
             android:layout_width="80sp"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="15sp"
             android:background="@drawable/daetaapplication_button_custom_cancel"
             android:text="취소"></Button>
@@ -84,9 +82,10 @@
         <Button
             android:id="@+id/description_regBtn"
             android:layout_width="80sp"
-            android:layout_height="40sp"
+            android:layout_height="wrap_content"
             android:background="@drawable/daetaapplication_button_custom_confirm"
-            android:text="신청 "></Button>
+            android:text="신청 "
+            android:enabled="false" />
 
     </LinearLayout>
 </LinearLayout>

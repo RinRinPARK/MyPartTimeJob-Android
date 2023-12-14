@@ -74,6 +74,7 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
         closeButton.setOnClickListener(this);
         Button inputButton = (Button) v.findViewById(R.id.description_regBtn);
         inputButton.setOnClickListener(this);
+        TextView albasaeng = (TextView) v.findViewById(R.id.alba_text);
 
         setCancelable(false); //화면 터치 시 꺼짐을 막음
 
@@ -91,7 +92,7 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
                                 SimpleDateFormat sdf = new SimpleDateFormat("dd");
                                 sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
                                 String day = String.valueOf(Integer.parseInt(sdf.format(timestampToDate)));
-                                if (day.equals(itemDay)) {
+                                if (day.equals(itemDay) && !((boolean) document.get("covered"))) {
                                     String writerId = (String) document.get("writerId");
                                     participationCode = (String) document.get("participationCode");
                                     date = (Timestamp) document.get("date");
@@ -106,13 +107,14 @@ public class DescriptionReg_DialogFragment extends DialogFragment implements Vie
                                                     if(task.isSuccessful()) {
                                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                                             name.setText((String) document.get("name"));
+                                                            albasaeng.setText("알바생");
+                                                            inputButton.setEnabled(true);
                                                         }
                                                     }  else {
                                                         Log.d("Surin", "Error getting documents: ", task.getException());
                                                     }
                                                 }
                                             });
-
                                     description.setText((String) document.get("description"));
                                     daeta = new Daeta(participationCode, branchName, wage, timestampToDate, (String) document.get("time"), (String) document.get("description"), (String) document.get("writerId"), null, (boolean) document.get("externalTF"));
                                 }
