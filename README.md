@@ -21,3 +21,7 @@
 ### 🛠 Tech Stack
 
 `JAVA`, `Android Studio`, `FireBase`
+
+<h2 id="3">🎥 Demo Video</h2>
+
+👉🏻[Click here!](https://youtu.be/HUDQScmMrh4?si=AaMVJ8pNUapQSBg-")
